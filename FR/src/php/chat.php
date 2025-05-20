@@ -15,7 +15,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="../css/commande.css" />
+    <link rel="stylesheet" href="../css/chat.css" />
     <link rel="stylesheet" href="../css/normalize.css" />
     <script src="../js/jquery.min.js"></script>
 
@@ -28,14 +28,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <nav>
             <ul class="menu">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="commande.php">Commander un panier</a></li>
-                <li><a href="espaceuser.php">Profil</a></li>
+                <li><a href="chat.php">Let's chat !</a></li>
+                <li><a href="espaceuser.php">Profile</a></li>
             </ul>
         </nav>
     </header>
     <a href="index.php"><img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey"></a> <!--logo EchoKey-->
 
-    <h1>Nos partenaires les plus proches</h1>
+    <h1>Commençons à discuter et trouvez vos amis !</h1>
 
 
     <img src="../../images/footernutritium.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Transnoise-->
@@ -55,6 +55,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </div>
 </footer>
 
-<script src="../js/commande.js"> </script>
+<script src="../js/chat.js"> </script>
 </body>
 </html>

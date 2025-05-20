@@ -27,7 +27,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <nav>
         <ul class="menu">
             <li><a href="index.php">Home</a></li>
-            <li><a href="commande.php">Commander un panier</a></li>
+            <li><a href="chat.php">Commander un panier</a></li>
             <li><a href="espaceuser.php">Profil</a></li>
         </ul>
     </nav>
@@ -60,7 +60,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
       <div class="accordion-item">
         <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">Comment fonctionne la commande de panier ?</span><span class="icon" aria-hidden="true"></span></button>
         <div class="accordion-content">
-          <p>C'est très simple. <br><br> Une fois votre compte créé, vous pouvez commencer à utiliser le service Nutritium™ et réserver un panier depuis la page <a href="commande.php">Commander un panier</a>.
+          <p>C'est très simple. <br><br> Une fois votre compte créé, vous pouvez commencer à utiliser le service Nutritium™ et réserver un panier depuis la page <a href="chat.php">Commander un panier</a>.
               <br><br>Sous réserve des stocks disponibles, un panier sera alors réservé chez le partenaire que vous aurez choisi, un qr code vous sera alors généré et vous pourrez aller récupérer et payer votre panier !<br></p>
         </div>
       </div>

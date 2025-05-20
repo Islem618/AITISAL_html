@@ -18,7 +18,7 @@ session_start(); // Démarrez la session au début de chaque page PHP
 <nav>
     <ul class="menu">
         <li><a href="index.php">Home</a></li>
-        <li><a href="commande.php">Commander un panier</a></li>
+        <li><a href="chat.php">Commander un panier</a></li>
         <li><a href="espaceuser.php">Profil</a></li>
     </ul>
 </nav>

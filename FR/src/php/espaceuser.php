@@ -24,7 +24,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
       <nav>
           <ul class="menu">
               <li><a href="index.php">Home</a></li>
-              <li><a href="commande.php">Commander un panier</a></li>
+              <li><a href="chat.php">Commander un panier</a></li>
               <li><a href="espaceuser.php">Profil</a></li>
           </ul>
       </nav>
@@ -50,7 +50,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
       <div class="img2" style="margin-top: 200px">
         <figure>
-          <a href="commande.php">
+          <a href="chat.php">
             <img src="../../images/commandebutton.png" id="img-analyse" />
             <div class="image-text2">analyse</div>
           </a>
