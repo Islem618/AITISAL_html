@@ -34,6 +34,15 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <h1>Commençons à discuter et trouvez vos amis !</h1>
 
+<!-- ─── NOUVELLE SECTION : Ajouter un ami ─────────────────────────── -->
+<section id="friends-section">
+    <h2>Ajouter un ami</h2>
+    <ul id="user-list">
+        <!-- peuplé dynamiquement par chat.js -->
+    </ul>
+</section>
+<!-- ───────────────────────────────────────────────────────────────── -->
+
 <!-- CONTENEUR DU FIL DE DISCUSSION -->
 <div id="chat-feed" class="chat-feed"></div>
 
