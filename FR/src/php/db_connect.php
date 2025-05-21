@@ -17,4 +17,7 @@ try {
 } catch (\PDOException $e) {
      throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
+
+// **Alias de compatibilité** : vos anciens scripts utilisent $conn
+$conn = $pdo;
 ?>

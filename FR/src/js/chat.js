@@ -1,7 +1,6 @@
 // Popup servant à la déconnexion
 function deconnexion() {
-  var result = confirm("Voulez-vous vraiment vous déconnecter?");
-  if (result == true) {
+  if (confirm("Voulez-vous vraiment vous déconnecter?")) {
     alert("Merci de votre visite");
     window.location.href = 'logout.php';
   }
@@ -10,106 +9,32 @@ function deconnexion() {
 // JS Hover bouton déconnexion
 function changerImage(etat) {
   var img = document.getElementById("imgdeco");
-  if (etat === "survol") {
-    img.src = "../../images/déconnexion2-hover.png";
-  } else {
-    img.src = "../../images/déconnexion2.png";
-  }
+  if (!img) return;
+  img.src = etat === "survol"
+      ? "../../images/déconnexion2-hover.png"
+      : "../../images/déconnexion2.png";
 }
 
-// Gestion dynamique de la hauteur du footer
+// Récupérer la hauteur du footer
 var footerHeight = document.querySelector('.footer').offsetHeight;
-var logosFooter  = document.getElementById('LogosFooter');
+
+// Appliquer la hauteur du footer comme max-height au LogosFooter
+var logosFooter = document.getElementById('LogosFooter');
 logosFooter.style.maxHeight = footerHeight + 'px';
 
+// Récupérer la hauteur du footer
+var footerHeight = document.querySelector('.footer').offsetHeight;
+
+// Appliquer la hauteur du footer comme max-height à l'élément avec l'id "imgdeco"
 var imgDeco = document.getElementById('imgdeco');
 imgDeco.style.maxHeight = footerHeight + 'px';
 
 document.addEventListener("DOMContentLoaded", function () {
-  // 1) Bascule formulaires login/register
-  var registerBtn     = document.getElementById("registerBtn");
-  var loginBtn        = document.getElementById("loginBtn");
-  var loginWrapper    = document.getElementById("loginWrapper");
-  var registerWrapper = document.getElementById("registerWrapper");
-
-  registerBtn.addEventListener("click", function () {
-    loginWrapper.style.display    = "none";
-    registerWrapper.style.display = "block";
-  });
-  loginBtn.addEventListener("click", function () {
-    loginWrapper.style.display    = "block";
-    registerWrapper.style.display = "none";
-  });
-
-  // 2) Login form
-  var loginForm = document.getElementById("loginForm");
-  loginForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var email = document.getElementById("loginEmail").value;
-    var pw    = document.getElementById("loginPassword").value;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "login.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onload = function () {
-      try {
-        var res = JSON.parse(this.responseText);
-        if (res.status === "success") window.location.href = "../php/index.php";
-        else alert(res.message || "Une erreur est survenue");
-      } catch (err) {
-        console.error("Login JSON parse error:", err, this.responseText);
-      }
-    };
-    xhr.send("loginEmail=" + encodeURIComponent(email) +
-        "&loginPassword=" + encodeURIComponent(pw));
-  });
-
-  // 3) Register form
-  var registerForm = document.getElementById("registerForm");
-  registerForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var fn = document.getElementById("registerFirstName").value;
-    var ln = document.getElementById("registerLastName").value;
-    var em = document.getElementById("registerEmail");
-    var pw = document.getElementById("registerPassword").value;
-    var rp = document.getElementById("RepeatPassword").value;
-
-    if (pw !== rp) {
-      alert("Les mots de passe ne correspondent pas.");
-      return;
-    }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "register.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onload = function () {
-      try {
-        var res = JSON.parse(this.responseText);
-        if (res.status === "success") window.location.href = "../php/index.php";
-        else if (res.status==="error" && res.message==="email_exists") {
-          em.style.color = 'red';
-          alert("Cet email est déjà utilisé.");
-        } else {
-          em.style.color = 'initial';
-          alert(res.message||"Erreur lors de l'enregistrement");
-        }
-      } catch (err) {
-        console.error("Register JSON parse error:", err, this.responseText);
-      }
-    };
-    xhr.send(
-        "registerFirstName=" + encodeURIComponent(fn) +
-        "&registerLastName="  + encodeURIComponent(ln) +
-        "&registerEmail="     + encodeURIComponent(em.value) +
-        "&registerPassword="  + encodeURIComponent(pw) +
-        "&RepeatPassword="    + encodeURIComponent(rp)
-    );
-  });
-
-  // 4) Fil « Let's Chat ! » (sur la page concernée)
+  // Si on n'est pas sur la page chat, on ne fait rien de plus
   var feed = document.getElementById("chat-feed");
-  if (!feed) return;  // si pas sur la page chat, on arrête ici
+  if (!feed) return;
 
+  // Charge les messages existants
   function loadFeed() {
     fetch('api/get_feed.php')
         .then(r => r.json())
@@ -122,14 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         `).join('');
           feed.scrollTop = feed.scrollHeight;
-        }).catch(console.error);
+        })
+        .catch(console.error);
   }
 
+  // Envoie un nouveau message
   function sendMessage() {
-    var inp  = document.getElementById('chat-input');
-    var txt  = inp.value.trim();
+    var inp = document.getElementById('chat-input');
+    var txt = inp.value.trim();
     if (!txt) return;
-
     fetch('api/post_message.php', {
       method:  'POST',
       headers: {'Content-Type':'application/json'},
@@ -137,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(r => r.json())
         .then(res => {
-          if (res.status==='success') {
+          if (res.status === 'success') {
             inp.value = '';
             loadFeed();
           } else {
-            alert(res.message||'Erreur lors de l’envoi');
+            alert(res.message || 'Erreur lors de l’envoi');
           }
         })
         .catch(console.error);
