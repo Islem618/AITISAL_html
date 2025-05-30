@@ -8,34 +8,87 @@ function deconnexion() {
 
 // ─── Hover sur le bouton déconnexion ─────────────────────────────
 function changerImage(etat) {
-    var img = document.getElementById("imgdeco");
+    const img = document.getElementById("imgdeco");
     if (!img) return;
     img.src = etat === "survol"
         ? "../../images/déconnexion2-hover.png"
         : "../../images/déconnexion2.png";
 }
 
-// Récupérer la hauteur du footer
-var footerHeight = document.querySelector('.footer').offsetHeight;
-
-// Appliquer la hauteur du footer comme max-height au LogosFooter
-var logosFooter = document.getElementById('LogosFooter');
-logosFooter.style.maxHeight = footerHeight + 'px';
-
-// Récupérer la hauteur du footer
-var footerHeight = document.querySelector('.footer').offsetHeight;
-
-// Appliquer la hauteur du footer comme max-height à l'élément avec l'id "imgdeco"
-var imgDeco = document.getElementById('imgdeco');
-imgDeco.style.maxHeight = footerHeight + 'px';
+// ─── Ajuster la hauteur des logos au footer ───────────────────────
+const footerHeight = document.querySelector('.footer').offsetHeight;
+document.getElementById('LogosFooter').style.maxHeight = footerHeight + 'px';
+document.getElementById('imgdeco')     .style.maxHeight = footerHeight + 'px';
 
 // ─── DOMContentLoaded : chat + ajout d’amis ──────────────────────
-document.addEventListener("DOMContentLoaded", function () {
-    // On ne poursuit que si on est sur la page chat
-    var feed = document.getElementById("chat-feed");
-    if (!feed) return;
+document.addEventListener("DOMContentLoaded", () => {
+    const feed     = document.getElementById("chat-feed");
+    const form     = document.getElementById("chat-form");
+    const input    = document.getElementById("chat-input");
+    const userList = document.getElementById("user-list");
+    const me       = window.currentUserId;   // <-- Ajout nécessaire
+    let   currentConv = null;                // <-- Ajout nécessaire
 
-    // ─── 1) Fil de discussion ──────────────────────────────────────
+    if (!feed) return; // on n'est pas sur la page chat
+
+    // ─── 1) Récupérer la liste des conversations ──────────────────
+    function loadConversations() {
+        fetch('api/get_conversations.php')
+            .then(r => r.json())
+            .then(convs => {
+                if (convs.length && currentConv === null) {
+                    currentConv = convs[0].conversation_id;
+                }
+                loadMessages();
+            })
+            .catch(console.error);
+    }
+
+    // ─── 2) Charger les messages de la conversation active ────────
+    function loadMessages() {
+        if (!currentConv) return;
+        fetch(`api/get_messages.php?conversation_id=${currentConv}`)
+            .then(r => r.json())
+            .then(msgs => {
+                feed.innerHTML = msgs.map(m => `
+          <div class="message ${m.from_id === me ? 'me' : 'them'}">
+            <strong>${m.prenom} ${m.nom}</strong>
+            <small>${m.created_at}</small>
+            <p>${m.content}</p>
+          </div>
+        `).join('');
+                feed.scrollTop = feed.scrollHeight;
+            })
+            .catch(console.error);
+    }
+
+    // ─── 3) Envoyer un message (privé si conv, sinon mur public) ──
+    function sendMessage() {
+        const txt = input.value.trim();
+        if (!txt) return;
+
+        const payload = { content: txt };
+        if (currentConv) payload.conversation_id = currentConv; // <-- Ajout
+
+        fetch('api/post_message.php', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload)
+        })
+            .then(r => r.json())
+            .then(res => {
+                if (res.status === 'success') {
+                    input.value = '';
+                    if (currentConv) loadMessages();
+                    else            loadFeed();
+                } else {
+                    alert(res.message || 'Erreur lors de l’envoi');
+                }
+            })
+            .catch(console.error);
+    }
+
+    // ─── 4) Ancien mur public (flux) ───────────────────────────────
     function loadFeed() {
         fetch('api/get_feed.php')
             .then(r => r.json())
@@ -52,54 +105,22 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(console.error);
     }
 
-    function sendMessage() {
-        var inp = document.getElementById('chat-input');
-        var txt = inp.value.trim();
-        if (!txt) return;
-        fetch('api/post_message.php', {
-            method:  'POST',
-            headers: {'Content-Type':'application/json'},
-            body:    JSON.stringify({ content: txt })
-        })
-            .then(r => r.json())
-            .then(res => {
-                if (res.status === 'success') {
-                    inp.value = '';
-                    loadFeed();
-                } else {
-                    alert(res.message || 'Erreur lors de l’envoi');
-                }
-            })
-            .catch(console.error);
-    }
-
-    loadFeed();
-    document.getElementById("chat-form")
-        .addEventListener("submit", function(e){
-            e.preventDefault();
-            sendMessage();
-        });
-
-    // ─── 2) Liste des utilisateurs & ajout d’amis ────────────────
+    // ─── 5) Liste des utilisateurs + ajout d’amis ────────────────
     function loadUsers() {
         fetch('api/get_users.php')
             .then(r => r.json())
             .then(users => {
-                var ul = document.getElementById('user-list');
-                ul.innerHTML = '';
+                userList.innerHTML = '';
                 users.forEach(u => {
-                    var li = document.createElement('li');
+                    const li = document.createElement('li');
                     li.innerHTML = `
             ${u.username}
             <button class="btn-add" data-id="${u.id}">Ajouter</button>
           `;
-                    ul.appendChild(li);
+                    userList.appendChild(li);
                 });
-                // lier les boutons
-                ul.querySelectorAll('.btn-add').forEach(btn => {
-                    btn.addEventListener('click', function(){
-                        addFriend(this.dataset.id);
-                    });
+                userList.querySelectorAll('.btn-add').forEach(btn => {
+                    btn.addEventListener('click', () => addFriend(btn.dataset.id));
                 });
             })
             .catch(console.error);
@@ -108,20 +129,30 @@ document.addEventListener("DOMContentLoaded", function () {
     function addFriend(friendId) {
         fetch('api/add_friend.php', {
             method:  'POST',
-            headers: {'Content-Type':'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ friend_id: friendId })
         })
             .then(r => r.json())
             .then(res => {
-                if (res.status === 'success') {
-                    loadUsers();  // rafraîchir pour masquer l’ami ajouté
-                } else {
-                    alert(res.message || "Impossible d’ajouter cet ami");
-                }
+                if (res.status === 'success') loadUsers();
+                else                          alert(res.message || "Impossible d’ajouter cet ami");
             })
             .catch(console.error);
     }
 
-    // appel initial
+    // ─── Initialisation + polling auto every 2s ───────────────────
+    loadConversations();
+    // si tu veux conserver le mur public en plus :
+    // loadFeed();
+
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        sendMessage();
+    });
+
     loadUsers();
+    setInterval(() => {
+        if (currentConv) loadMessages();
+        else            loadFeed();
+    }, 2000);
 });

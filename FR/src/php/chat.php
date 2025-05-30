@@ -5,7 +5,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -34,25 +33,20 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <h1>Commençons à discuter et trouvez vos amis !</h1>
 
-<!-- ─── NOUVELLE SECTION : Ajouter un ami ─────────────────────────── -->
 <section id="friends-section">
     <h2>Ajouter un ami</h2>
     <ul id="user-list">
         <!-- peuplé dynamiquement par chat.js -->
     </ul>
 </section>
-<!-- ───────────────────────────────────────────────────────────────── -->
 
-<!-- CONTENEUR DU FIL DE DISCUSSION -->
 <div id="chat-feed" class="chat-feed"></div>
 
-<!-- FORMULAIRE D'ENVOI -->
 <form id="chat-form" class="chat-form">
     <input type="text" id="chat-input" placeholder="Écrivez un message..." autocomplete="off" />
     <button type="submit">Envoyer</button>
 </form>
 
-<!-- Logos & déconnexion -->
 <img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos">
 <img src="../../images/déconnexion2.png" id="imgdeco"
      alt="déconnexion" title="Déconnexion"
@@ -71,6 +65,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </nav>
     </div>
 </footer>
+
+<!-- **NOUVEAU : exposer l’ID de l’utilisateur à chat.js** -->
+<script>
+    window.currentUserId = <?= (int)$_SESSION['user_id'] ?>;
+</script>
 
 <script src="../js/chat.js"></script>
 </body>
