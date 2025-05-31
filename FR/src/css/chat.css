@@ -210,3 +210,38 @@ h1 {
     text-align: center;
   }
 }
+/* ─── Ajouts MINIMAUX pour mettre en page “Conversations / Amis / Chat” ───────────────── */
+
+/* 1) Colonne “Mes conversations” à gauche */
+#conversations-section {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* 2) Colonne “Ajouter un ami” juste à droite de la première */
+#friends-section {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-left: 2%;
+}
+
+/* 3) Chat (mur privé ou public) sur le reste de la ligne */
+#chat-feed, .chat-form {
+  float: right;
+  width: 55%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* 4) En responsive (<=767px), on empile tout */
+@media screen and (max-width: 767px) {
+  #conversations-section, #friends-section, #chat-feed, .chat-form {
+    float: none;
+    width: 100%;
+    margin-top: 10px;
+  }
+}

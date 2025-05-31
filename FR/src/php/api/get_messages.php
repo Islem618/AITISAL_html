@@ -1,56 +1,51 @@
 <?php
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8');
+require_once __DIR__ . '/../db_connect.php';
 
-// 1) Connexion à la BDD
-require_once __DIR__ . '/../db_connect.php';  // ou config.php si c'est là ta connexion
-
-// 2) Vérif. authentification
-if (!isset($_SESSION['id_User'])) {
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
-    echo json_encode(['error'=>'Non authentifié']);
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
-$me = (int) $_SESSION['id_User'];
 
-// 3) Récupérer l’ID de la conversation
-if (empty($_GET['conversation_id'])) {
-    http_response_code(400);
-    echo json_encode(['error'=>'conversation_id manquant']);
+$me  = (int)$_SESSION['user_id'];
+$cid = isset($_GET['conversation_id']) ? (int)$_GET['conversation_id'] : 0;
+if ($cid <= 0) {
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
-$cid = (int) $_GET['conversation_id'];
 
-// 4) Vérifier que l’utilisateur participe bien à cette conversation
-$sql = "SELECT 1
-          FROM conversation_user
-         WHERE conversation_id = :cid
-           AND user_id = :me
-         LIMIT 1";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['cid'=>$cid, 'me'=>$me]);
-if (!$stmt->fetch()) {
+// 1) Vérifier que l’utilisateur appartient bien à cette conversation
+$chk = $conn->prepare("
+  SELECT 1 FROM conversation_user
+   WHERE conversation_id = :cid
+     AND user_id = :me
+   LIMIT 1
+");
+$chk->execute(['cid'=>$cid,'me'=>$me]);
+if (!$chk->fetch()) {
     http_response_code(403);
-    echo json_encode(['error'=>'Accès refusé']);
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// 5) Charger les messages
+// 2) Récupérer les messages
 $sql = "
-  SELECT m.id,
-         m.from_id,
-         u.prenom,
-         u.nom,
-         m.content,
-         DATE_FORMAT(m.created_at, '%Y-%m-%d %H:%i:%s') AS created_at
-    FROM message m
-    JOIN user u ON u.id_User = m.from_id
-   WHERE m.conversation_id = :cid
-   ORDER BY m.created_at ASC
+  SELECT
+    m.id,
+    m.from_id,
+    m.content,
+    m.created_at,
+    u.prenom,
+    u.nom
+  FROM message m
+  JOIN user u ON m.from_id = u.id_User
+  WHERE m.conversation_id = :cid
+  ORDER BY m.created_at ASC
 ";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['cid'=>$cid]);
-$messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $conn->prepare($sql);
+$stmt->execute(['cid' => $cid]);
+$msgs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 6) Envoyer le JSON
-echo json_encode($messages, JSON_UNESCAPED_UNICODE);
+echo json_encode($msgs, JSON_UNESCAPED_UNICODE);
