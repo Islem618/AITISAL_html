@@ -45,11 +45,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <ul id="user-list"><!-- peuplé dynamiquement par chat.js --></ul>
 </section>
 
+<!-- ─── SECTION : Suggestions d’amis (friend-of-friend) ─────────────────── -->
+<section id="recommendations-section">
+    <h2>Suggestions d’amis</h2>
+    <ul id="recommendation-list">
+        <!-- Peupler dynamiquement via chat.js -->
+    </ul>
+</section>
+
 <!-- ─── CONTENU DU CHAT / MUR PUBLIC ─────────────────────────────── -->
 <div id="chat-feed" class="chat-feed"></div>
 
 <form id="chat-form" class="chat-form">
-    <input type="text" id="chat-input" placeholder="Écrivez un message…" autocomplete="off" />
+    <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
     <button type="submit">Envoyer</button>
 </form>
 
