@@ -37,146 +37,178 @@ function changerImage(etat) {
         : "../../images/déconnexion2.png";
 }
 
-// ────────────────────────────────────────────────────────────────────────────────────
-// Au chargement de la page, on initialise chat + liste d’amis
-// ────────────────────────────────────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", function() {
-    var feed     = document.getElementById("chat-feed");
-    var form     = document.getElementById("chat-form");
-    var input    = document.getElementById("chat-input");
-    var userList = document.getElementById("user-list");
-    var me       = window.currentUserId || 0;
+document.addEventListener("DOMContentLoaded", () => {
+    const feed       = document.getElementById("chat-feed");
+    const form       = document.getElementById("chat-form");
+    const input      = document.getElementById("chat-input");
+    const userList   = document.getElementById("user-list");
+    const convList   = document.getElementById("conversation-list");
+    const me         = window.currentUserId || 0;
+    let   currentConv = null;
 
-    if (!feed || !form || !input || !userList) {
-        // Si ces éléments n’existent pas, on arrête
+    // Si on n’est pas sur chat.php, on sort
+    if (!feed || !form || !input || !userList || !convList) {
         return;
     }
 
-    // ─── 1) Charger le mur public (flux)
-    function loadFeed() {
-        fetch('api/get_feed.php')
-            .then(function(resp) { return resp.json(); })
-            .then(function(posts) {
-                // posts doit être un tableau d’objets { username, created_at, content }
-                feed.innerHTML = "";
-                posts.forEach(function(p) {
-                    var div = document.createElement('div');
-                    div.className = "post";
-                    div.innerHTML = "<strong>" + p.username + "</strong> " +
-                        "<small>" + p.created_at + "</small>" +
-                        "<p>" + p.content + "</p>";
-                    feed.appendChild(div);
+    // 1) Charger la liste des conversations privées
+    function loadConversations() {
+        fetch('api/get_conversations.php')
+            .then(resp => resp.json())
+            .then(convs => {
+                convList.innerHTML = '';
+                convs.forEach(c => {
+                    const li = document.createElement('li');
+                    li.textContent = `Conversation #${c.conversation_id}`;
+                    li.dataset.id = c.conversation_id;
+                    if (c.conversation_id === currentConv) {
+                        li.classList.add('active');
+                    }
+                    li.addEventListener('click', () => {
+                        currentConv = c.conversation_id;
+                        // mise à jour visuelle
+                        convList.querySelectorAll('li').forEach(x => x.classList.remove('active'));
+                        li.classList.add('active');
+                        loadMessages();
+                    });
+                    convList.appendChild(li);
                 });
-                // Scroll en bas
-                feed.scrollTop = feed.scrollHeight;
+                // si aucune conv n’est sélectionnée, on clique la première
+                if (!currentConv && convs.length) {
+                    convList.querySelector('li').click();
+                }
             })
-            .catch(function(err) {
-                console.error("Erreur loadFeed :", err);
-            });
+            .catch(err => console.error("Erreur loadConversations :", err));
     }
 
-    // ─── 2) Envoyer un message au mur public
-    form.addEventListener("submit", function(e) {
+    // 2) Charger les messages de la conversation active
+    function loadMessages() {
+        if (!currentConv) return;
+        fetch(`api/get_messages.php?conversation_id=${currentConv}`)
+            .then(resp => resp.json())
+            .then(msgs => {
+                feed.innerHTML = msgs.map(m => `
+          <div class="message ${m.from_id === me ? 'me' : 'them'}">
+            <strong>${m.prenom} ${m.nom}</strong>
+            <small>${m.created_at}</small>
+            <p>${m.content}</p>
+          </div>
+                `).join('');
+                feed.scrollTop = feed.scrollHeight;
+            })
+            .catch(err => console.error("Erreur loadMessages :", err));
+    }
+
+    // 3) Charger le mur public (flux) si pas de conversation active
+    function loadFeed() {
+        fetch('api/get_feed.php')
+            .then(resp => resp.json())
+            .then(posts => {
+                feed.innerHTML = posts.map(p => `
+          <div class="post">
+            <strong>${p.username}</strong>
+            <small>${p.created_at}</small>
+            <p>${p.content}</p>
+          </div>
+                `).join('');
+                feed.scrollTop = feed.scrollHeight;
+            })
+            .catch(err => console.error("Erreur loadFeed :", err));
+    }
+
+    // 4) Envoi de message (dans conversation active ou sur le feed public)
+    form.addEventListener('submit', e => {
         e.preventDefault();
-        var texte = input.value.trim();
-        if (!texte) return;
-        var payload = { content: texte };
+        const txt = input.value.trim();
+        if (!txt) return;
+
+        const payload = { content: txt };
+        if (currentConv) {
+            payload.conversation_id = currentConv;
+        }
         fetch('api/post_message.php', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(payload)
         })
-            .then(function(resp) { return resp.json(); })
-            .then(function(res) {
+            .then(resp => resp.json())
+            .then(res => {
                 if (res.status === 'success') {
-                    input.value = "";
-                    loadFeed();
+                    input.value = '';
+                    if (currentConv) loadMessages();
+                    else            loadFeed();
                 } else {
-                    alert(res.message || "Erreur envoi message");
+                    alert(res.message || 'Erreur lors de l’envoi');
                 }
             })
-            .catch(function(err) {
-                console.error("Erreur sendMessage :", err);
-            });
+            .catch(err => console.error("Erreur sendMessage :", err));
     });
 
-    // ─── 3) Charger la liste des utilisateurs pour les ajouter en ami
+    // 5) Charger la liste des utilisateurs pour ajouter en ami
     function loadUsers() {
         fetch('api/get_users.php')
-            .then(function(resp) {
-                // Vérifie la réponse brute pour débug si besoin
-                return resp.json();
-            })
-            .then(function(users) {
-                // S’assure que users est un tableau
+            .then(resp => resp.json())
+            .then(users => {
                 if (!Array.isArray(users)) {
-                    console.error("loadUsers: réponse inattendue :", users);
-                    userList.innerHTML = "<li>Erreur de chargement</li>";
+                    console.error("loadUsers : réponse inattendue", users);
+                    userList.innerHTML = '<li>Erreur de chargement</li>';
                     return;
                 }
-                // Vide la liste
-                userList.innerHTML = "";
-
-                users.forEach(function(u) {
-                    var li = document.createElement('li');
-                    // On crée un bouton « Ajouter »
-                    var btn = document.createElement('button');
-                    btn.textContent = "Ajouter";
+                userList.innerHTML = '';
+                users.forEach(u => {
+                    const li = document.createElement('li');
+                    li.textContent = u.username + ' ';
+                    const btn = document.createElement('button');
+                    btn.textContent = 'Ajouter';
                     btn.dataset.id = u.id;
-
-                    // Texte du li + bouton
-                    li.textContent = u.username + " ";
+                    btn.addEventListener('click', () => addFriend(u.id, btn));
                     li.appendChild(btn);
                     userList.appendChild(li);
-
-                    // Événement clic sur « Ajouter »
-                    btn.addEventListener("click", function() {
-                        addFriend(u.id, btn);
-                    });
                 });
             })
-            .catch(function(err) {
+            .catch(err => {
                 console.error("Erreur loadUsers :", err);
-                userList.innerHTML = "<li>Impossible de charger</li>";
+                userList.innerHTML = '<li>Impossible de charger</li>';
             });
     }
 
-    // ─── 4) Ajouter un ami
+    // 6) Ajouter un ami → crée friendship + conversation privée
     function addFriend(friendId, btn) {
-        // Désactive immédiatement le bouton pour éviter les doubles clics
         btn.disabled = true;
-
         fetch('api/add_friend.php', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ friend_id: friendId })
         })
-            .then(function(resp) { return resp.json(); })
-            .then(function(res) {
+            .then(resp => resp.json())
+            .then(res => {
                 if (res.status === 'success') {
-                    // On recharge la liste des utilisateurs pour griser le bouton
-                    loadUsers();
-                    // (Optionnel) scroll automatique du chat, etc.
-                    console.log("Ami ajouté, conversation ID =", res.conversation_id);
+                    loadUsers();  // rafraîchir la liste (bouton grisé)
+                    const newCid = res.conversation_id;
+                    if (newCid) {
+                        currentConv = newCid;
+                        loadConversations();
+                        setTimeout(loadMessages, 100);
+                    }
                 } else {
-                    alert(res.message || "Impossible d’ajouter cet ami");
-                    // Si échec, on réactive le bouton
+                    alert(res.message || 'Impossible d’ajouter cet ami');
                     btn.disabled = false;
                 }
             })
-            .catch(function(err) {
+            .catch(err => {
                 console.error("Erreur addFriend :", err);
-                // En cas d’erreur réseau, on réactive le bouton
                 btn.disabled = false;
             });
     }
 
-    // ─── 5) Initialisation – charger le flux et la liste d’utilisateurs
-    loadFeed();
-    loadUsers();
+    // 7) Initialisation
+    loadConversations(); // Charge / affiche immédiatement les conversations
+    loadUsers();         // Charge la liste des utilisateurs
+    loadFeed();          // Affiche par défaut le feed public
 
-    // Rafraîchissement automatique toutes les 2 secondes
-    setInterval(function() {
-        loadFeed();
+    // rafraîchissement automatique toutes les 2 s
+    setInterval(() => {
+        if (currentConv) loadMessages();
+        else            loadFeed();
     }, 2000);
 });
