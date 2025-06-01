@@ -1,0 +1,456 @@
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../../fonts/Maven_Pro/Maven-Pro-regular.woff") format("woff");
+    /* Ajoutez d'autres formats si nécessaire */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-image: url("../../images/Nutritium_Background1.png");
+    background-size: cover;
+    background-repeat: repeat; /* Empêche la répétition de l'image */
+    background-attachment: fixed; /* Fixe l'image pour qu'elle reste en place lorsque l'utilisateur fait défiler la page */
+}
+
+/* Espace entre menu et logo EchoKey */
+nav {
+    margin-bottom: 20px; /* Ajoute de l'espace en bas de la balise <nav> */
+}
+
+/* HEADER EN DESSUS */
+#Logo1 {
+    margin-top: 30px;   /* espace au-dessus */
+    width: 150px;       /* ajustez cette valeur à ce qui vous convient */
+    height: auto;       /* conserve le ratio */
+}
+
+*,/* css Barre de menu */
+*:before,
+*:after {
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+    letter-spacing: 1.1px;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Maven Pro";
+}
+
+/*gere le menu dans l'index*/
+.menu {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    position: absolute;
+    top: 0px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    list-style: none;
+}
+
+.menu li {
+    width: 100%;
+    list-style: none;
+    height: 50px;
+    text-align: center;
+    background-color: rgba(26, 227, 1, 0.54);
+}
+
+.menu li a {
+    font-size: 30px;
+    color: #777;
+    text-decoration: none;
+    transition: all 0.45s;
+}
+
+
+/*l'animation de vague*/
+.menu li:hover {
+    background: url("../../images/testonde.png");
+    animation: line 1s;
+    background-color: rgba(26, 227, 1, 0.54);
+}
+
+.menu li:hover a {
+    color: #4fa9d9;
+}
+
+.menu li:not(:last-child) {
+    margin: 0 auto;
+}
+
+@keyframes line {
+    0% {
+        background-position-x: 390px;
+    }
+}
+
+/* Header Styles */
+.header {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #4fa9d9;
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+h2 {
+    color: #4fa9d9;
+}
+/*dimensionnement des images*/
+#img-analyse {
+    width: 220px;
+    height: 200px;
+}
+
+#img-forum {
+    width: 200px;
+    height: 200px;
+}
+
+#img-profil {
+    width: 200px;
+    height: 200px;
+}
+
+/* structure de la page*/
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.main {
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+}
+.welcome-section {
+    width: 100%;
+    height: 25%;
+    float: left;
+    text-align: center; /* centre le <h1> */
+}
+
+
+/* effet de hover sur les images*/
+.img1 figure img {
+    opacity: 1;
+    -webkit-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+.img1 figure:hover img {
+    opacity: 0.5;
+}
+
+.img2 figure img {
+    opacity: 1;
+    -webkit-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+
+.img2 figure:hover img {
+    opacity: 0.5;
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    right: 0;
+    bottom: 0px;
+    left: 0;
+    padding-top: 0.5rem; /* Augmenter la hauteur en ajustant le padding */
+    padding-bottom: 1px; /* Vous pouvez ajuster ces valeurs selon vos besoins */
+    background-color: rgba(26, 227, 1, 0.54);
+    text-align: center;
+}
+
+.footer nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer nav ul li {
+    display: inline;
+}
+
+.footer nav ul li a {
+    text-decoration: none;
+    color: #777; /* Couleur du texte pour les liens */
+    margin-left: 75px;
+    font-size: 15px;
+    transition: all 0.45s;
+}
+.footer li:hover a {
+    color: #4fa9d9;
+}
+
+/* CSS image de déconnexion */
+#imgdeco {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 0.1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    z-index: 5;
+}
+
+/* CSS logos de marques */
+#LogosFooter {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    width: auto;
+    margin-bottom: 0.01rem;
+    margin-left: 0.5rem;
+    z-index: 5;
+}
+
+
+/* Hover sur les icones*/
+.img1 {
+    position: relative;
+    display: inline-block;
+}
+
+.image-text {
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    opacity: 0; /* initially hidden */
+    transition: opacity 0.3s ease;
+}
+
+.img1:hover .image-text {
+    opacity: 1; /* show text on hover */
+}
+
+.img2 {
+    position: relative;
+    display: inline-block;
+}
+.image-text2 {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    opacity: 0; /* initially hidden */
+    transition: opacity 0.3s ease;
+}
+
+.img2:hover .image-text2 {
+    opacity: 1; /* show text on hover */
+}
+
+/* Définissez les styles pour les appareils mobiles avec une largeur maximale de 767px */
+@media screen and (max-width: 767px) {
+    .menu {
+        flex-direction: row; /* Change la direction des éléments en colonne */
+        display: flex;
+        justify-content: space-around; /* Espacement égal entre les éléments */
+        width: 767px; /* Pour occuper toute la largeur */
+    }
+
+    .menu li {
+        flex: 1 1 calc(50% - 10px); /* Redimensionne la largeur des éléments pour s'adapter au contenu */
+        height: auto; /* Ajuste la hauteur en fonction du contenu */
+        text-align: center; /* Aligne le texte à gauche */
+        padding: 10px; /* Ajoute un peu d'espace autour des éléments */
+        border-bottom: 1px solid #ddd; /* Ajoute une séparation entre les éléments */
+    }
+
+    .menu li:last-child {
+        border-bottom: none; /* Supprime la bordure en bas du dernier élément */
+    }
+
+    .menu li a {
+        font-size: 18px; /* Réduit la taille de la police */
+    }#LogosFooter {
+         width: 15%; /* Ajustez la hauteur pour les appareils mobiles si nécessaire */
+     }
+
+    /* Footer */
+    .footer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding-top: 0.5rem; /* Augmenter la hauteur en ajustant le padding */
+        padding-bottom: 1px; /* Vous pouvez ajuster ces valeurs selon vos besoins */
+        background-color: rgba(26, 227, 1, 0.54);
+        text-align: center;
+    }
+}
+/* ────────────────────────────────────────────────────────────────────────────
+   AJOUTS : style de la section “Mes centres d’intérêts” (centré + boutons)
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* == Conteneur principal == */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;           /* <-- ajouté pour centrer verticalement */
+    min-height: calc(100vh - 80px);     /* ajustez "80px" si nécessaire (hauteur header+footer) */
+    padding: 2rem 0;                    /* on remplace padding-top à la place */
+}
+
+
+/* on centre le titre et le formulaire */
+main h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    color: #4fa9d9; /* même couleur que vos headers */
+}
+
+/* on centre le formulaire et on lui donne une largeur max */
+#interests-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(255,255,255,0.9);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* == Liste des intérêts == */
+#interests-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* espace entre les boutons */
+}
+
+/* Chaque item de la liste devient un “toggle button” */
+#interests-list li {
+    position: relative;
+}
+
+/* On masque la checkbox et on stylise le label en bouton */
+#interests-list input[type="checkbox"] {
+    display: none;
+}
+
+/* Style de base pour chaque label (fausse case à cocher) */
+#interests-list label {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    background-color: #f0f0f0;
+    border: 2px solid #4fa9d9;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Effet hover sur le “bouton” */
+#interests-list label:hover {
+    background-color: #e0f7ff;
+    color: #006d99;
+}
+
+/* Quand la checkbox est cochée, on change le style du label */
+#interests-list input[type="checkbox"]:checked + label {
+    background-color: #4fa9d9;
+    color: #fff;
+    border-color: #4fa9d9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* On ajoute une icône ✓ devant le texte quand c’est coché */
+#interests-list input[type="checkbox"]:checked + label::before {
+    content: "✓ ";
+    font-weight: bold;
+}
+
+/* == Bouton “Enregistrer mes intérêts” == */
+#interests-form button[type="submit"] {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #4fa9d9;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover sur le bouton de soumission */
+#interests-form button[type="submit"]:hover {
+    background-color: #368bbb;
+}
+
+/* == Message de validation (“Vos intérêts ont été enregistrés”) == */
+#interests-msg {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: green; /* par défaut */
+}
+
+/* == Footer et image déco sont déjà stylés plus haut, pas besoin de toucher == */
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Responsive (≤767px) : on réajuste la largeur du bloc principal
+   ──────────────────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 767px) {
+    #interests-form {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    #interests-list {
+        gap: 0.5rem;
+    }
+
+    #interests-list label {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    #interests-form button[type="submit"] {
+        width: 100%;
+        padding: 0.7rem;
+    }
+}
