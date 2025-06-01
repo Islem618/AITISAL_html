@@ -6,78 +6,64 @@
   font-style: normal;
 }
 
+/* ─── Styles de base ───────────────────────────────────────────────────── */
+html,
 body {
-  background-image: url("../../images/Nutritium_Background1.png");
-  background-size: cover;
-  background-repeat: repeat; /* Empêche la répétition de l'image */
-  background-attachment: fixed; /* Fixe l'image pour qu'elle reste en place lorsque l'utilisateur fait défiler la page */
-}
-
-/* Espace entre menu et logo EchoKey */
-nav {
-  margin-bottom: 20px; /* Ajoute de l'espace en bas de la balise <nav> */
-}
-
-/* HEADER EN DESSUS */
-#Logo1 {
-  margin-top: 30px;   /* espace au-dessus */
-  width: 150px;       /* ajustez cette valeur à ce qui vous convient */
-  height: auto;       /* conserve le ratio */
-}
-
-
-*,/* css Barre de menu */
-*:before,
-*:after {
-  box-sizing: inherit;
-  padding: 0;
-  letter-spacing: 1.1px;
-}
-
-body,
-html {
   width: 100%;
   height: 100%;
-  padding: 0;
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
   font-family: "Maven Pro";
+  background-image: url("../../images/Nutritium_Background1.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  overflow-x: hidden;
 }
 
-/*gere le menu dans l'index*/
+/* ─── Conteneur principal ───────────────────────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ─── Barre de menu ───────────────────────────────────────────────────── */
+nav {
+  margin-bottom: 20px; /* Espace sous la barre de menu */
+}
+
 .menu {
-  padding: 0;
-  margin: 0;
   display: flex;
-  position: absolute;
-  top: 0px;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  margin: 0;
   list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .menu li {
-  width: 100%;
-  list-style: none;
-  height: 50px;
+  flex: 1;
   text-align: center;
   background-color: rgba(26, 227, 1, 0.54);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu li a {
   font-size: 30px;
   color: #777;
   text-decoration: none;
-  transition: all 0.45s;
+  transition: color 0.2s;
 }
 
-
-/*l'animation de vague*/
 .menu li:hover {
   background: url("../../images/testonde.png");
-  animation: line 1s;
+  animation: wave 1s;
   background-color: rgba(26, 227, 1, 0.54);
 }
 
@@ -85,30 +71,232 @@ html {
   color: #4fa9d9;
 }
 
-.menu li:not(:last-child) {
-  margin: 0 auto;
-}
-
-@keyframes line {
+@keyframes wave {
   0% {
     background-position-x: 390px;
   }
 }
 
-/* Css de la page */
+/* ─── Titre principal ────────────────────────────────────────────────── */
 h1 {
   text-align: center;
+  margin-top: 80px; /* Espace sous la barre de menu */
+  color: #4fa9d9;
+  font-size: 2em;
 }
 
+/* ─── Disposition “Mes conversations / Chat / Ajouter un ami / Suggestions” ─ */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
-/* Footer */
+/* Section “Mes conversations” (gauche) */
+#conversations-section {
+  float: left;
+  width: 20%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Section “Chat” (centre) */
+#chat-section {
+  float: left;
+  width: 40%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Section “Ajouter un ami” (droite) */
+#friends-section {
+  float: left;
+  width: 20%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Section “Suggestions d’amis” (droite-après “Ajouter un ami”) */
+#recommendations-section {
+  float: left;
+  width: 20%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* ─── Styles des boîtes blanches ──────────────────────────────────────── */
+.section-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajout de marge inférieure pour espacer les boîtes verticalement */
+.section-box + .section-box {
+  margin-top: 20px;
+}
+
+/* ─── Styles pour les listes dans chaque section ───────────────────────── */
+#conversations-section ul,
+#friends-section ul,
+#recommendations-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#conversations-section li,
+#friends-section li,
+#recommendations-section li {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.95em;
+}
+
+#conversations-section li:hover,
+#friends-section li:hover,
+#recommendations-section li:hover {
+  background-color: #e0f7fc;
+}
+
+#conversations-section li.active {
+  background-color: #dcf8c6;
+}
+
+/* Boutons “Ajouter” dans “Ajouter un ami” */
+#friends-section button {
+  margin-left: 8px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #4fa9d9;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9em;
+}
+
+#friends-section button:hover:enabled {
+  background-color: #3a8bb8;
+}
+
+#friends-section button:disabled {
+  background-color: #aaa;
+  cursor: default;
+}
+
+/* ─── Styles de la section “Chat” ───────────────────────────────────────── */
+
+/* Conteneur interne pour centrer et limiter la zone chat */
+#chat-section .chat-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Bouton “← Chat public” */
+#chat-section .chat-container > button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #4fa9d9;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+}
+
+#chat-section .chat-container > button:hover {
+  background-color: #3a8bb8;
+}
+
+/* Zone d’affichage des messages */
+#chat-feed {
+  width: 100%;
+  height: 300px;
+  overflow-y: auto;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+/* Chaque message */
+.message {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 70%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+}
+
+.message.me {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+}
+
+.message.them {
+  align-self: flex-start;
+  background-color: #fff;
+}
+
+.message strong {
+  display: block;
+  color: #4fa9d9;
+}
+
+.message small {
+  font-size: 0.75em;
+  color: #666;
+}
+
+/* Formulaire d’envoi */
+.chat-form {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.chat-form input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  font-size: 1em;
+}
+
+.chat-form button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #4fa9d9;
+  color: white;
+  font-size: 1em;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-form button:hover {
+  background-color: #3a8bb8;
+}
+
+/* ─── Pied de page ───────────────────────────────────────────────────── */
 .footer {
   position: fixed;
-  right: 0;
-  bottom: 0px;
+  bottom: 0;
   left: 0;
-  padding-top: 0.5rem; /* Augmenter la hauteur en ajustant le padding */
-  padding-bottom: 1px; /* Vous pouvez ajuster ces valeurs selon vos besoins */
+  right: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 1px;
   background-color: rgba(26, 227, 1, 0.54);
   text-align: center;
 }
@@ -116,6 +304,7 @@ h1 {
 .footer nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer nav ul li {
@@ -124,21 +313,21 @@ h1 {
 
 .footer nav ul li a {
   text-decoration: none;
-  color: #777; /* Couleur du texte pour les liens */
+  color: #777;
   margin-left: 75px;
   font-size: 15px;
-  transition: all 0.45s;
+  transition: color 0.2s;
 }
+
 .footer li:hover a {
   color: #4fa9d9;
 }
 
-/* CSS image de déconnexion */
+/* Image de déconnexion */
 #imgdeco {
   position: fixed;
   bottom: 0;
   right: 0;
-  width: auto;
   max-width: 100%;
   margin-bottom: 0.1rem;
   margin-right: 1rem;
@@ -146,7 +335,11 @@ h1 {
   z-index: 5;
 }
 
-/* CSS logos de marques */
+#imgdeco:hover {
+  opacity: 0.8;
+}
+
+/* Logos au pied */
 #LogosFooter {
   position: fixed;
   bottom: 0;
@@ -158,107 +351,47 @@ h1 {
   z-index: 5;
 }
 
-/* Définissez les styles pour les appareils mobiles avec une largeur maximale de 767px */
+/* ─── RESPONSIVE (≤ 767px) ────────────────────────────────────────── */
 @media screen and (max-width: 767px) {
   .menu {
-    flex-direction: row; /* Change la direction des éléments en colonne */
-    display: flex;
-    justify-content: space-around; /* Espacement égal entre les éléments */
-    width: 767px; /* Pour occuper toute la largeur */
+    justify-content: space-around;
+    flex-wrap: wrap;
   }
 
   .menu li {
-    flex: 1 1 calc(50% - 10px); /* Redimensionne la largeur des éléments pour s'adapter au contenu */
-    height: auto; /* Ajuste la hauteur en fonction du contenu */
-    text-align: center; /* Aligne le texte à gauche */
-    padding: 10px; /* Ajoute un peu d'espace autour des éléments */
-    border-bottom: 1px solid #ddd; /* Ajoute une séparation entre les éléments */
+    flex: 1 1 calc(50% - 10px);
+    height: auto;
+    padding: 10px 0;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
   }
 
   .menu li:last-child {
-    border-bottom: none; /* Supprime la bordure en bas du dernier élément */
+    border-bottom: none;
   }
 
   .menu li a {
-    font-size: 18px; /* Réduit la taille de la police */
-  }
-  body {
-    /* Arrière-plan spécifique pour les appareils mobiles */
-    background-image: url('../../images/Nutritium_Background1.png');
-    background-size: cover;
-    background-repeat: repeat; /* Active la répétition de l'arrière-plan */
-    background-attachment: scroll;
+    font-size: 18px;
   }
 
-
-  #imgdeco {
-    width: 15%; /* Ajustez la largeur pour les appareils mobiles si nécessaire */
-  }
-  #LogosFooter {
-    width: 15%; /* Ajustez la hauteur pour les appareils mobiles si nécessaire */
-  }
-
-  /* Footer */
-  .footer {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding-top: 0.5rem; /* Augmenter la hauteur en ajustant le padding */
-    padding-bottom: 1px; /* Vous pouvez ajuster ces valeurs selon vos besoins */
-    background-color: rgba(26, 227, 1, 0.54);
-    text-align: center;
-  }
-}
-
-/* ─── Ajouts MINIMAUX pour mettre en page “Conversations / Amis / Chat” ───────────────── */
-
-/* 1) Colonne “Mes conversations” à gauche */
-#conversations-section {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-/* 2) Colonne “Ajouter un ami” juste à droite de la première */
-#friends-section {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  box-sizing: border-box;
-  margin-left: 2%;
-}
-
-/* 3) Chat (mur privé ou public) sur le reste de la ligne */
-#chat-feed, .chat-form {
-  float: right;
-  width: 55%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-/* 4) En responsive (<=767px), on empile tout */
-@media screen and (max-width: 767px) {
-  #conversations-section, #friends-section, #chat-feed, .chat-form {
-    float: none;
-    width: 100%;
-    margin-top: 10px;
-  }
-}
-/* ─── Mise en page “Recommandations” ─────────────────────────────────── */
-#recommendations-section {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  box-sizing: border-box;
-  margin-left: 2%;
-}
-@media screen and (max-width: 767px) {
+  /* Empilement des sections verticalement */
+  #conversations-section,
+  #chat-section,
+  #friends-section,
   #recommendations-section {
-    float: none;
-    width: 100%;
+    float: none !important;
+    width: 100% !important;
     margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  /* Ajustements du chat */
+  #chat-section .chat-container {
+    width: 100% !important;
+  }
+
+  .chat-form {
+    width: 90%;
+    margin: 0 auto;
   }
 }
-

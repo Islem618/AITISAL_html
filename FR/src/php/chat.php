@@ -27,39 +27,40 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </nav>
 </header>
 
-<a href="index.php">
-    <img src="../../images/logonutritium.png" id="Logo1" alt="Logo Nutritium">
-</a>
-
 <h1>Commençons à discuter et trouvez vos amis !</h1>
 
-<!-- ─── SECTION : Conversations privées ─────────────────────────── -->
-<section id="conversations-section">
-    <h2>Mes conversations</h2>
-    <ul id="conversation-list"><!-- peuplé dynamiquement par chat.js --></ul>
-</section>
+<div class="container clearfix">
+    <!-- ─── SECTION : Conversations privées ─────────────────────────── -->
+    <section id="conversations-section" class="section-box">
+        <h2>Mes conversations</h2>
+        <ul id="conversation-list"><!-- peuplé dynamiquement par chat.js --></ul>
+    </section>
 
-<!-- ─── SECTION : Ajouter un ami ───────────────────────────────── -->
-<section id="friends-section">
-    <h2>Ajouter un ami</h2>
-    <ul id="user-list"><!-- peuplé dynamiquement par chat.js --></ul>
-</section>
+    <!-- ─── SECTION : Chat / Mur public ─────────────────────────────── -->
+    <section id="chat-section" class="section-box">
+        <h2>Chat</h2>
+        <div class="chat-container">
+            <button id="returnBtn" style="display: none;">← Chat public</button>
+            <div id="chat-feed" class="chat-feed"></div>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </section>
 
-<!-- ─── SECTION : Suggestions d’amis (friend-of-friend) ─────────────────── -->
-<section id="recommendations-section">
-    <h2>Suggestions d’amis</h2>
-    <ul id="recommendation-list">
-        <!-- Peupler dynamiquement via chat.js -->
-    </ul>
-</section>
+    <!-- ─── SECTION : Ajouter un ami ───────────────────────────────── -->
+    <section id="friends-section" class="section-box">
+        <h2>Ajouter un ami</h2>
+        <ul id="user-list"><!-- peuplé dynamiquement par chat.js --></ul>
+    </section>
 
-<!-- ─── CONTENU DU CHAT / MUR PUBLIC ─────────────────────────────── -->
-<div id="chat-feed" class="chat-feed"></div>
-
-<form id="chat-form" class="chat-form">
-    <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
-    <button type="submit">Envoyer</button>
-</form>
+    <!-- ─── SECTION : Suggestions d’amis (friend-of-friend) ─────────────────── -->
+    <section id="recommendations-section" class="section-box">
+        <h2>Suggestions d’amis</h2>
+        <ul id="recommendation-list"><!-- Peupler dynamiquement via chat.js --></ul>
+    </section>
+</div>
 
 <img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos">
 <img src="../../images/déconnexion2.png" id="imgdeco"
