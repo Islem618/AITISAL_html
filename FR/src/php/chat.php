@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../css/normalize.css" />
     <link rel="stylesheet" href="../css/chat.css" />
     <script src="../js/jquery.min.js"></script>
@@ -17,31 +17,34 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <title>Let's Chat !</title>
 </head>
 <body>
-<header>
-    <nav>
-        <ul class="menu">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="chat.php">Let's Chat !</a></li>
-            <li><a href="espaceuser.php">Profile</a></li>
-        </ul>
-    </nav>
-</header>
+<!-- Barre de menu -->
+<nav>
+    <ul class="menu">
+        <li><a href="index.php">Home</a></li>
+        <li><a href="chat.php">Let's Chat !</a></li>
+        <li><a href="espaceuser.php">Profile</a></li>
+    </ul>
+</nav>
 
+<!-- Titre principal -->
 <h1>Commençons à discuter et trouvez vos amis !</h1>
 
+<!-- Conteneur central -->
 <div class="container clearfix">
-    <!-- ─── SECTION : Conversations privées ─────────────────────────── -->
+    <!-- Section “Mes conversations” (gauche) -->
     <section id="conversations-section" class="section-box">
         <h2>Mes conversations</h2>
-        <ul id="conversation-list"><!-- peuplé dynamiquement par chat.js --></ul>
+        <ul id="conversation-list">
+            <!-- Peuplement par chat.js -->
+        </ul>
     </section>
 
-    <!-- ─── SECTION : Chat / Mur public ─────────────────────────────── -->
+    <!-- Section “Chat” (centre) : LE BOUTON “← Chat public” SERA INSÉRÉ PAR LE JS -->
     <section id="chat-section" class="section-box">
-        <h2>Chat</h2>
         <div class="chat-container">
-            <button id="returnBtn" style="display: none;">← Chat public</button>
-            <div id="chat-feed" class="chat-feed"></div>
+            <div id="chat-feed">
+                <!-- Messages / posts insérés par chat.js -->
+            </div>
             <form id="chat-form" class="chat-form">
                 <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
                 <button type="submit">Envoyer</button>
@@ -49,25 +52,22 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </div>
     </section>
 
-    <!-- ─── SECTION : Ajouter un ami ───────────────────────────────── -->
+    <!-- Section “Amis potentiels” (droite) -->
     <section id="friends-section" class="section-box">
-        <h2>Ajouter un ami</h2>
-        <ul id="user-list"><!-- peuplé dynamiquement par chat.js --></ul>
-    </section>
-
-    <!-- ─── SECTION : Suggestions d’amis (friend-of-friend) ─────────────────── -->
-    <section id="recommendations-section" class="section-box">
-        <h2>Suggestions d’amis</h2>
-        <ul id="recommendation-list"><!-- Peupler dynamiquement via chat.js --></ul>
+        <h2>Amis potentiels</h2>
+        <ul id="friend-candidates-list">
+            <!-- Peuplement par chat.js -->
+        </ul>
     </section>
 </div>
 
-<img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos">
+<!-- Pied de page & logos -->
+<img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos" />
 <img src="../../images/déconnexion2.png" id="imgdeco"
      alt="Déconnexion" title="Déconnexion"
      onmouseover="changerImage('survol')"
      onmouseout="changerImage('normal')"
-     onclick="deconnexion()">
+     onclick="deconnexion()" />
 
 <footer>
     <div class="footer">
@@ -81,7 +81,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </div>
 </footer>
 
-<!-- expose l’ID de l’utilisateur au JS -->
+<!-- Injection de l’ID utilisateur au JS -->
 <script>
     window.currentUserId = <?= (int)($_SESSION['user_id'] ?? $_SESSION['id_User']) ?>;
 </script>

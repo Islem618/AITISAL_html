@@ -19,8 +19,7 @@ function changerImage(etat) {
 const footerHeight = document.querySelector('.footer').offsetHeight;
 document.getElementById('LogosFooter').style.maxHeight = footerHeight + 'px';
 document.getElementById('imgdeco')     .style.maxHeight = footerHeight + 'px';
-
-// ─── Popup déconnexion ───────────────────────────────────────────
+// ─── Popup de déconnexion ─────────────────────────────────────────
 function deconnexion() {
     if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
         alert("Merci de votre visite");
@@ -37,23 +36,25 @@ function changerImage(etat) {
         : "../../images/déconnexion2.png";
 }
 
+
+// ─── Code principal après chargement du DOM ───────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const feed        = document.getElementById('chat-feed');
-    const form        = document.getElementById('chat-form');
-    const input       = document.getElementById('chat-input');
-    const userList    = document.getElementById('user-list');
-    const convList    = document.getElementById('conversation-list');
-    const recoList    = document.getElementById('recommendation-list');
-    const me          = window.currentUserId || 0;
+    const feed     = document.getElementById('chat-feed');
+    const form     = document.getElementById('chat-form');
+    const input    = document.getElementById('chat-input');
+    const userList = document.getElementById('friend-candidates-list');
+    const convList = document.getElementById('conversation-list');
+    const me       = window.currentUserId || 0;
     let   currentConv = null;
 
-    // Si on n'est pas sur chat.php, on quitte
-    if (!feed || !form || !input || !userList || !convList || !recoList) return;
+    // Si on n’est pas sur chat.php, on quitte
+    if (!feed || !form || !input || !userList || !convList) return;
 
     // ─── Bouton “← Chat public” ─────────────────────────────────────
     const returnBtn = document.createElement('button');
-    returnBtn.textContent      = '← Chat public';
-    returnBtn.style.display    = 'none';
+    returnBtn.textContent        = '← Chat public';
+    returnBtn.className          = 'btn-public';
+    returnBtn.style.display      = 'none';
     returnBtn.style.marginBottom = '10px';
     returnBtn.addEventListener('click', () => {
         currentConv = null;
@@ -61,9 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
         convList.querySelectorAll('li').forEach(x => x.classList.remove('active'));
         loadFeed();
     });
+    // On insère ce bouton au-dessus de la zone “feed”
     feed.parentNode.insertBefore(returnBtn, feed);
 
-    // ─── 1) Charger la liste des conversations privées ───────────────
+    // ─── 1) Charger les conversations privées ─────────────────────────
     function loadConversations() {
         fetch('../php/api/get_conversations.php')
             .then(resp => resp.json())
@@ -82,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 convs.forEach(c => {
                     const friendName = `${c.friend_prenom} ${c.friend_nom}`;
                     const li = document.createElement('li');
-                    li.textContent  = `Chat privé ${friendName}`;
-                    li.dataset.id   = c.conversation_id;
-
+                    li.textContent    = `Chat privé ${friendName}`;
+                    li.dataset.id     = c.conversation_id;
+                    // Si cette conversation est déjà affichée, on la marque “active”
                     if (c.conversation_id === currentConv) {
                         li.classList.add('active');
                     }
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     convList.appendChild(li);
                 });
 
+                // Si aucune conversation n’est sélectionnée, on clique sur la première
                 if (!currentConv && convs.length) {
                     const firstLi = convList.querySelector('li[data-id]');
                     if (firstLi) firstLi.click();
@@ -109,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 2) Charger les messages d’une conversation privée ────────────
+    // ─── 2) Charger les messages d’une conversation privée ─────────────
     function loadMessages() {
         if (!currentConv) return;
         fetch(`../php/api/get_messages.php?conversation_id=${currentConv}`)
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 3) Charger le chat public (flux) ───────────────────────────
+    // ─── 3) Charger le chat public (mur) ───────────────────────────────
     function loadFeed() {
         fetch('../php/api/get_feed.php')
             .then(resp => resp.json())
@@ -158,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 4) Envoi d’un message (privé ou public) ─────────────────────
+    // ─── 4) Envoi d’un message (privé ou public) ───────────────────────
     form.addEventListener('submit', e => {
         e.preventDefault();
         const txt = input.value.trim();
@@ -184,45 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => console.error('Erreur sendMessage :', err));
     });
 
-    // ─── 5) Charger la liste des utilisateurs (span clickable + bouton Ajouter) ─
-    function loadUsers() {
-        fetch('../php/api/get_users.php')
-            .then(resp => resp.json())
-            .then(users => {
-                if (!Array.isArray(users)) {
-                    console.error('loadUsers : réponse inattendue', users);
-                    userList.innerHTML = '<li>Erreur de chargement</li>';
-                    return;
-                }
-                userList.innerHTML = '';
-                users.forEach(u => {
-                    const li   = document.createElement('li');
-                    const span = document.createElement('span');
-                    span.textContent        = u.username;
-                    span.style.cursor       = 'pointer';
-                    span.style.textDecoration = 'underline';
-                    span.style.color        = '#004';
-                    span.addEventListener('click', () => openConversation(u.id));
-
-                    const btn = document.createElement('button');
-                    btn.textContent    = 'Ajouter';
-                    btn.dataset.id     = u.id;
-                    btn.style.marginLeft = '6px';
-                    btn.addEventListener('click', () => addFriend(u.id, btn));
-
-                    li.appendChild(span);
-                    li.appendChild(document.createTextNode(' '));
-                    li.appendChild(btn);
-                    userList.appendChild(li);
-                });
-            })
-            .catch(err => {
-                console.error('Erreur loadUsers :', err);
-                userList.innerHTML = '<li>Impossible de charger les utilisateurs.</li>';
-            });
-    }
-
-    // ─── 6) Créer l’amitié + la conversation privée d’emblée ─────────
+    // ─── 5) Créer une amitié + conversation privée ─────────────────────
     function addFriend(friendId, btn) {
         btn.disabled = true;
         fetch('../php/api/add_friend.php', {
@@ -233,7 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(resp => resp.json())
             .then(res => {
                 if (res.status === 'success') {
-                    loadUsers();
+                    // Recharger la liste fusionnée
+                    buildFriendCandidatesList();
+                    // Ouvrir automatiquement la nouvelle conversation
                     currentConv = res.conversation_id;
                     returnBtn.style.display = 'block';
                     loadConversations();
@@ -249,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 7) Ouvrir (ou créer) la conversation privée via “span click” ─
+    // ─── 6) Ouvrir (ou créer) la conversation privée via un clic ───────
     function openConversation(friendId) {
         fetch(`../php/api/get_conversation.php?friend_id=${friendId}`)
             .then(resp => resp.json())
@@ -261,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadConversations();
                     setTimeout(loadMessages, 100);
                 } else {
+                    // Créer la conversation si elle n’existe pas encore
                     fetch('../php/api/create_conversation.php', {
                         method:  'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -285,56 +253,106 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         })
                         .catch(err => {
-                            console.error('Erreur openConversation (création) :', err);
+                            console.error('Erreur openConversation :', err);
                             alert(err.message || 'Impossible d’ouvrir la conversation privée.');
                         });
                 }
             })
             .catch(err => {
-                console.error('Erreur openConversation (vérif) :', err);
+                console.error('Erreur openConversation :', err);
                 alert('Impossible d’ouvrir la conversation privée.');
             });
     }
 
-    // ─── 9) Charger les suggestions d’amis (friend-of-friend) ─────────
-    function loadRecommendations() {
+    // ─── 7) Construire la liste fusionnée “Amis potentiels” ─────────────
+    // a) Récupère get_recommendations.php → [ { suggestion_id, suggestion_prenom, suggestion_nom, mutual_count, interest_count }, … ]
+    // b) Récupère get_users.php        → [ { id, username }, … ]
+    // c) Fusionne et affiche :
+    //    • d’abord, chaque suggestion (suggestion-card)
+    //    • puis, chaque autre utilisateur restant (normal-card)
+    function buildFriendCandidatesList() {
         fetch('../php/api/get_recommendations.php')
-            .then(resp => resp.json())
-            .then(rows => {
-                recoList.innerHTML = '';
-                if (!Array.isArray(rows) || rows.length === 0) {
-                    const li = document.createElement('li');
-                    li.textContent     = 'Aucune suggestion pour l’instant.';
-                    li.style.fontStyle = 'italic';
-                    recoList.appendChild(li);
-                    return;
+            .then(res => res.json())
+            .then(recoRows => {
+                // 1) Construire le mapping des suggestions
+                const recoMap = {};
+                if (Array.isArray(recoRows)) {
+                    recoRows.forEach(r => {
+                        // On s’attend à : r.suggestion_id, r.suggestion_prenom, r.suggestion_nom, r.mutual_count, r.interest_count
+                        recoMap[r.suggestion_id] = {
+                            prenom:   r.suggestion_prenom,
+                            nom:      r.suggestion_nom,
+                            mutual:   r.mutual_count,
+                            interest: r.interest_count
+                        };
+                    });
                 }
-                rows.forEach(r => {
-                    const li = document.createElement('li');
-                    li.textContent = `${r.suggestion_prenom} ${r.suggestion_nom} (${r.mutual_count} ami(s) en commun)`;
-                    recoList.appendChild(li);
-                });
+
+                // 2) Récupérer ensuite la liste épurée des utilisateurs non amis
+                return fetch('../php/api/get_users.php')
+                    .then(res2 => res2.json())
+                    .then(userRows => {
+                        userList.innerHTML = '';
+
+                        // 3) Afficher d’abord toutes les suggestions
+                        Object.keys(recoMap).forEach(idStr => {
+                            const uid    = parseInt(idStr, 10);
+                            const person = recoMap[uid];
+                            const li = document.createElement('li');
+                            li.className = 'candidate-card suggestion-card';
+                            li.innerHTML = `
+                                <div class="candidate-info">
+                                  <span class="candidate-name">
+                                    ${person.prenom} ${person.nom}
+                                  </span>
+                                  <span class="candidate-meta">
+                                    (${person.mutual} ami(s), ${person.interest} intérêt(s))
+                                  </span>
+                                </div>
+                                <button class="btn-add" data-id="${uid}">Ajouter</button>
+                            `;
+                            const btn = li.querySelector('button.btn-add');
+                            btn.addEventListener('click', () => addFriend(uid, btn));
+                            userList.appendChild(li);
+                        });
+
+                        // 4) Puis, lister tous les autres “userRows” qui ne sont pas dans recoMap
+                        userRows.forEach(u => {
+                            if (recoMap[u.id]) return; // déjà affiché en suggestion
+
+                            const li = document.createElement('li');
+                            li.className = 'candidate-card normal-card';
+                            li.innerHTML = `
+                                <div class="candidate-info">
+                                  <span class="candidate-name">${u.username}</span>
+                                </div>
+                                <button class="btn-add" data-id="${u.id}">Ajouter</button>
+                            `;
+                            const btn = li.querySelector('button.btn-add');
+                            btn.addEventListener('click', () => addFriend(u.id, btn));
+                            userList.appendChild(li);
+                        });
+                    });
             })
             .catch(err => {
-                console.error('Erreur loadRecommendations :', err);
-                recoList.innerHTML = '<li>Impossible de charger les suggestions.</li>';
+                console.error('Erreur buildFriendCandidatesList :', err);
+                userList.innerHTML = '<li>Impossible de charger la liste d’amis potentiels.</li>';
             });
     }
 
-    // ─── 10) Initialisation ───────────────────────────────────────────
+    // ─── 8) Initialisation au chargement de la page ────────────────────
     loadConversations();
-    loadUsers();
-    loadRecommendations();
+    buildFriendCandidatesList();
     loadFeed();
 
-    // Rafraîchissement automatique
+    // → Rafraîchissement automatique du chat (public ou privé)
     setInterval(() => {
         if (currentConv) loadMessages();
         else            loadFeed();
     }, 2000);
 
-    // Rafraîchir aussi les suggestions toutes les 30s
+    // → Rafraîchir la liste d’amis potentiels toutes les 30 secondes
     setInterval(() => {
-        loadRecommendations();
+        buildFriendCandidatesList();
     }, 30000);
 });
