@@ -33,6 +33,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </nav>
 
     </header>
+  <!-- Pastille notification (en haut à droite) -->
+  <span id="notification-badge">
+  0
+</span>
+
+  <!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+  <section id="notification-box">
+      <h3>Notifications</h3>
+      <ul id="notification-panel"></ul>
+  </section>
 
   <!--le logo en haut à gauche-->
   <a href="index.php">
@@ -118,5 +128,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </footer>
 
   <script src="../js/faq.js"></script>
+  <script src="../js/notifications.js"></script>
 </body>
 </html>

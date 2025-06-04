@@ -35,6 +35,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   <div class="welcome-section">
       <h1>Bienvenue dans votre espace !</h1>
   </div>
+  <!-- Pastille notification (en haut à droite) -->
+  <span id="notification-badge">
+  0
+</span>
+
+  <!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+  <section id="notification-box">
+      <h3>Notifications</h3>
+      <ul id="notification-panel"></ul>
+  </section>
 
 
     <div class="main" style="width: 100%; height: 80%; float: left">
@@ -75,5 +85,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </div>
 </footer>
     <script src="../js/espaceuser.js"></script>
+  <script src="../js/notifications.js"></script>
   </body>
 </html>

@@ -34,6 +34,17 @@ session_start(); // Démarre la session au début du script
         <a href="index.php">
             <img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey">
         </a>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <!-- Pastille de notification -->
+        <span id="notification-badge">0</span>
+
+        <!-- Panneau de notifications -->
+        <section id="notification-box">
+            <h3>Notifications</h3>
+            <ul id="notification-panel"></ul>
+        </section>
+    <?php endif; ?>
+
     <?php
 if(isset($_SESSION['user_id'])) {
   echo '<p class="welcome-message">Bienvenue ' . $_SESSION['prenom'] . ' !' . '</p>';}
@@ -85,5 +96,12 @@ if(isset($_SESSION['user_id'])) {
 </div>
 </footer>
 <script src="../js/index.js"></script>
-</body>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <script>
+            window.currentUserId = <?= (int)($_SESSION['user_id'] ?? $_SESSION['id_User']) ?>;
+        </script>
+        <script src="../js/notifications.js"></script>
+    <?php endif; ?>
+
+  </body>
 </html>

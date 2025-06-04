@@ -358,3 +358,73 @@ h1 {
   z-index: 5;
 }
 
+
+/* ─── Notifications : Pastille ────────────────────────────────────────────── */
+#notification-badge {
+  display: none;
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background-color: #FF3B3F;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* ─── Notifications : Panneau ─────────────────────────────────────────────── */
+#notification-box {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: none;
+  padding: 10px;
+  z-index: 999;
+}
+#notification-box h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+#notification-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#notification-box ul li {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.95rem;
+  color: #444;
+}
+#notification-box ul li:last-child {
+  border-bottom: none;
+}
+#notification-box ul li:hover {
+  background-color: #f0f0f0;
+}
+
+/* ─── Responsive pour panneau de notifications ────────────────────────────── */
+@media screen and (max-width: 767px) {
+  #notification-badge {
+    top: 10px;
+    right: 10px;
+    font-size: 0.75rem;
+    padding: 3px 6px;
+  }
+
+  #notification-box {
+    top: 45px;
+    right: 10px;
+    width: 90%;
+    max-width: 320px;
+  }
+}

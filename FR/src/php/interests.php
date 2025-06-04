@@ -31,7 +31,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </ul>
     </nav>
 </header>
+<!-- Pastille notification (en haut à droite) -->
+<span id="notification-badge">
+  0
+</span>
 
+<!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+<section id="notification-box">
+    <h3>Notifications</h3>
+    <ul id="notification-panel"></ul>
+</section>
 <main>
     <h1>Mes centres d’intérêts</h1>
     <form id="interests-form">
@@ -166,5 +175,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </footer>
 
 <script src="../js/interests.js"></script>
+<script src="../js/notifications.js"></script>
 </body>
 </html>

@@ -29,6 +29,17 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <!-- Titre principal -->
 <h1>Commençons à discuter et trouvez vos amis !</h1>
 
+<!-- Pastille notification (en haut à droite) -->
+<span id="notification-badge">
+  0
+</span>
+
+<!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+<section id="notification-box">
+    <h3>Notifications</h3>
+    <ul id="notification-panel"></ul>
+</section>
+
 <!-- Conteneur central -->
 <div class="container clearfix">
     <!-- Section “Mes conversations” (gauche) -->
@@ -86,5 +97,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     window.currentUserId = <?= (int)($_SESSION['user_id'] ?? $_SESSION['id_User']) ?>;
 </script>
 <script src="../js/chat.js"></script>
+<script src="../js/notifications.js"></script>
 </body>
 </html>

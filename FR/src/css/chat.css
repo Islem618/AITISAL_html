@@ -88,6 +88,60 @@ h1 {
   font-size: 2em;
 }
 
+/* ─── Pastille & panneau de notifications ─────────────────────────────────── */
+/* Pastille en haut à droite */
+#notification-badge {
+  display: none;
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background-color: #FF3B3F;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Panneau des notifications */
+#notification-box {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: none;
+  padding: 10px;
+  z-index: 999;
+}
+#notification-box h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+#notification-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#notification-box ul li {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.95rem;
+  color: #444;
+}
+#notification-box ul li:last-child {
+  border-bottom: none;
+}
+#notification-box ul li:hover {
+  background-color: #f0f0f0;
+}
+
 /* ─── Boîtes blanches arrondies “section-box” ────────────────────────────── */
 .section-box {
   background-color: rgba(255, 255, 255, 0.9);
@@ -179,8 +233,8 @@ h1 {
   margin-bottom: 15px;
 }
 /* Chaque message ou post */
-.chat-feed .post,
-.chat-feed .message {
+#chat-feed .post,
+#chat-feed .message {
   background-color: #fff;
   border-radius: 6px;
   padding: 8px 12px;
@@ -188,21 +242,21 @@ h1 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
 }
-.chat-feed .message.me {
+#chat-feed .message.me {
   background-color: #dcf8c6;
   align-self: flex-end;
 }
-.chat-feed .message.them {
+#chat-feed .message.them {
   background-color: #f9f9f9;
   align-self: flex-start;
 }
-.chat-feed .message strong,
-.chat-feed .post strong {
+#chat-feed .message strong,
+#chat-feed .post strong {
   display: block;
   color: #4fa9d9;
 }
-.chat-feed .message small,
-.chat-feed .post small {
+#chat-feed .message small,
+#chat-feed .post small {
   font-size: 0.75em;
   color: #666;
 }
@@ -240,7 +294,7 @@ h1 {
   background-color: #3a8bb8;
 }
 
-/* ─── “Amis potentiels” (float right / à droite du chat) ───────────────── */
+/* ─── “Amis potentiels” (float.left 20%) ───────────────────────────────── */
 #friends-section {
   float: left;
   width: 20%;

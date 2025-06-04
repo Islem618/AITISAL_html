@@ -24,8 +24,16 @@ session_start();
       </ul>
   </nav>
 </header>
+  <!-- Pastille notification (en haut à droite) -->
+  <span id="notification-badge">
+  0
+</span>
 
-<!--logo Nutritium-->
+  <!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+  <section id="notification-box">
+      <h3>Notifications</h3>
+      <ul id="notification-panel"></ul>
+  </section>
 
     <div class="background"></div>
     <div class="logo-container">
@@ -277,6 +285,6 @@ session_start();
       </div>
     </footer>
     <script src="../js/Profil.js"></script>
-
+  <script src="../js/notifications.js"></script>
   </body>
 </html>

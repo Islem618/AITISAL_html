@@ -29,6 +29,16 @@ session_start(); // Démarrez la session au début de chaque page PHP
     <img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey">
 </a>
     <h1>Conditions Générales d'Utilisation - Nutritium</h1>
+<!-- Pastille notification (en haut à droite) -->
+<span id="notification-badge">
+  0
+</span>
+
+<!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+<section id="notification-box">
+    <h3>Notifications</h3>
+    <ul id="notification-panel"></ul>
+</section>
 
 <div class="section">
     <h2>1. Objet</h2>
@@ -113,5 +123,6 @@ session_start(); // Démarrez la session au début de chaque page PHP
 </footer>
 
 <script src="../js/CGU.js"></script>
+<script src="../js/notifications.js"></script>
 </body>
 </html>
