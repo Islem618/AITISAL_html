@@ -19,13 +19,6 @@ function changerImage(etat) {
 const footerHeight = document.querySelector('.footer').offsetHeight;
 document.getElementById('LogosFooter').style.maxHeight = footerHeight + 'px';
 document.getElementById('imgdeco')     .style.maxHeight = footerHeight + 'px';
-// ─── Popup de déconnexion ─────────────────────────────────────────
-function deconnexion() {
-    if (confirm("Voulez-vous vraiment vous déconnecter ?")) {
-        alert("Merci de votre visite");
-        window.location.href = 'logout.php';
-    }
-}
 
 // ─── Code principal pour le chat (images seulement, plus de vidéo) ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -99,9 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    // ─── Helper pour savoir si on est déjà en bas du scroll ─────────────────
+    function isAtBottom() {
+        return Math.abs(feed.scrollHeight - feed.scrollTop - feed.clientHeight) < 50;
+    }
+
     // ─── 2) Charger les messages privés (avec avatars + images) ───────────────
     function loadMessages() {
         if (!currentConv) return;
+        const shouldScroll = isAtBottom();
+
         fetch(`../php/api/get_messages.php?conversation_id=${currentConv}`)
             .then(resp => resp.json())
             .then(msgs => {
@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (['jpg','jpeg','png','gif'].includes(ext)) {
                             mediaHTML = `<img class="message-media" src="${url}" alt="Image jointe">`;
                         }
-                        // on ignore tout autre type (vidéo ne sera plus géré ici)
                     }
 
                     div.innerHTML = `
@@ -140,7 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     feed.appendChild(div);
                 });
-                feed.scrollTop = feed.scrollHeight;
+                if (shouldScroll) {
+                    feed.scrollTop = feed.scrollHeight;
+                }
             })
             .catch(err => {
                 console.error('Erreur loadMessages :', err);
@@ -150,6 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── 3) Charger le chat public (avec avatars + images) ────────────────────
     function loadFeed() {
+        const shouldScroll = isAtBottom();
+
         fetch('../php/api/get_feed.php')
             .then(resp => resp.json())
             .then(posts => {
@@ -172,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (['jpg','jpeg','png','gif'].includes(ext)) {
                             mediaHTML = `<img class="message-media" src="${urlM}" alt="Image jointe">`;
                         }
-                        // on ignore toute vidéo
                     }
 
                     div.innerHTML = `
@@ -188,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     feed.appendChild(div);
                 });
-                feed.scrollTop = feed.scrollHeight;
+                if (shouldScroll) {
+                    feed.scrollTop = feed.scrollHeight;
+                }
             })
             .catch(err => {
                 console.error('Erreur loadFeed :', err);
