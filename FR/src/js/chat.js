@@ -27,15 +27,16 @@ function deconnexion() {
     }
 }
 
-// ─── Code principal pour le chat ─────────────────────────────────────────────────
+// ─── Code principal pour le chat (images seulement, plus de vidéo) ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    const feed          = document.getElementById('chat-feed');
-    const form          = document.getElementById('chat-form');
-    const input         = document.getElementById('chat-input');
-    const userList      = document.getElementById('friend-candidates-list');
-    const convList      = document.getElementById('conversation-list');
-    const me            = window.currentUserId || 0;
-    let   currentConv   = null;
+    const feed       = document.getElementById('chat-feed');
+    const form       = document.getElementById('chat-form');
+    const input      = document.getElementById('chat-input');
+    const fileInput  = document.getElementById('chat-file');
+    const userList   = document.getElementById('friend-candidates-list');
+    const convList   = document.getElementById('conversation-list');
+    const me         = window.currentUserId || 0;
+    let   currentConv = null;
 
     // Si on n’est pas sur chat.php, on s’arrête
     if (!feed || !form || !input || !userList || !convList) return;
@@ -71,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 convs.forEach(c => {
                     const friendName = `${c.friend_prenom} ${c.friend_nom}`;
                     const li = document.createElement('li');
-                    li.textContent  = `Chat privé ${friendName}`;
-                    li.dataset.id   = c.conversation_id;
+                    li.textContent = `Chat privé ${friendName}`;
+                    li.dataset.id  = c.conversation_id;
                     if (c.conversation_id === currentConv) {
                         li.classList.add('active');
                     }
@@ -98,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 2) Charger les messages privés (avec avatars) ───────────────
+    // ─── 2) Charger les messages privés (avec avatars + images) ───────────────
     function loadMessages() {
         if (!currentConv) return;
         fetch(`../php/api/get_messages.php?conversation_id=${currentConv}`)
@@ -106,22 +107,36 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(msgs => {
                 feed.innerHTML = '';
                 msgs.forEach(m => {
-                    // Création d’une bulle de message
                     const div = document.createElement('div');
                     div.className = 'message ' + (m.from_id === me ? 'me' : 'them');
 
-                    // On récupère l’URL de l’avatar. Comme on est dans chat.js (FR/src/js),
-                    // on remonte de deux niveaux pour atteindre la racine FR/, puis on ajoute photo_path.
-                    const avatarUrl = `../../${m.photo_path}`;
+                    // URL de l’avatar (par défaut pdp.png, ou bien photo_path s’il existe)
+                    let avatarUrl = '../../uploads/photos/pdp.png';
+                    if (m.photo_path && m.photo_path.trim() !== '') {
+                        avatarUrl = `../../${m.photo_path}`;
+                    }
 
-                    // Injection du HTML avec l’avatar, le nom, l’horodatage et le contenu
+                    // Si un média image est attaché, on affiche <img>
+                    let mediaHTML = '';
+                    if (m.media_path) {
+                        const url = `../../${m.media_path}`;
+                        const ext = url.split('.').pop().toLowerCase();
+                        if (['jpg','jpeg','png','gif'].includes(ext)) {
+                            mediaHTML = `<img class="message-media" src="${url}" alt="Image jointe">`;
+                        }
+                        // on ignore tout autre type (vidéo ne sera plus géré ici)
+                    }
+
                     div.innerHTML = `
-                      <div class="message-header">
-                        <img class="avatar" src="${avatarUrl}" alt="Photo de ${m.prenom}" />
-                        <strong>${m.prenom} ${m.nom}</strong>
-                        <small class="timestamp">${m.created_at}</small>
-                      </div>
-                      <div class="message-content">${m.content}</div>
+                        <div class="message-header">
+                          <img class="avatar" src="${avatarUrl}" alt="Photo de ${m.prenom}" />
+                          <strong>${m.prenom} ${m.nom}</strong>
+                          <small class="timestamp">${m.created_at}</small>
+                        </div>
+                        <div class="message-content">
+                          <p>${m.content}</p>
+                          ${mediaHTML}
+                        </div>
                     `;
                     feed.appendChild(div);
                 });
@@ -133,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 3) Charger le chat public (avec avatars) ────────────────────
+    // ─── 3) Charger le chat public (avec avatars + images) ────────────────────
     function loadFeed() {
         fetch('../php/api/get_feed.php')
             .then(resp => resp.json())
@@ -143,16 +158,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     const div = document.createElement('div');
                     div.className = 'post';
 
-                    // On génère l’URL absolu de l’avatar (remonter de 2 niveaux puis photo_path)
-                    const avatarUrlPub = `../../${p.photo_path}`;
+                    // URL de l’avatar (par défaut pdp.png, ou photo_path s’il existe)
+                    let avatarUrlPub = '../../uploads/photos/pdp.png';
+                    if (p.photo_path && p.photo_path.trim() !== '') {
+                        avatarUrlPub = `../../${p.photo_path}`;
+                    }
+
+                    // Si un média image public est attaché, on affiche <img>
+                    let mediaHTML = '';
+                    if (p.media_path) {
+                        const urlM = `../../${p.media_path}`;
+                        const ext  = urlM.split('.').pop().toLowerCase();
+                        if (['jpg','jpeg','png','gif'].includes(ext)) {
+                            mediaHTML = `<img class="message-media" src="${urlM}" alt="Image jointe">`;
+                        }
+                        // on ignore toute vidéo
+                    }
 
                     div.innerHTML = `
-                      <div class="message-header">
-                        <img class="avatar" src="${avatarUrlPub}" alt="Photo de ${p.prenom}" />
-                        <strong>${p.prenom} ${p.nom}</strong>
-                        <small class="timestamp">${p.created_at}</small>
-                      </div>
-                      <div class="message-content">${p.content}</div>
+                        <div class="message-header">
+                          <img class="avatar" src="${avatarUrlPub}" alt="Photo de ${p.prenom}" />
+                          <strong>${p.prenom} ${p.nom}</strong>
+                          <small class="timestamp">${p.created_at}</small>
+                        </div>
+                        <div class="message-content">
+                          <p>${p.content}</p>
+                          ${mediaHTML}
+                        </div>
                     `;
                     feed.appendChild(div);
                 });
@@ -164,23 +196,40 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 4) Envoi d’un message privé ou public ───────────────────────
+    // ─── 4) Envoi d’un message privé ou public (texte + image uniquement) ───────────────────────
     form.addEventListener('submit', e => {
         e.preventDefault();
-        const txt = input.value.trim();
-        if (!txt) return;
-        const payload = { content: txt };
-        if (currentConv) payload.conversation_id = currentConv;
+        const text = input.value.trim();
+        const file = fileInput.files[0] || null;
+        if (!text && !file) return; // on n’envoie rien si ni texte ni fichier
+
+        // Vérifier le type de fichier : accepter uniquement les images
+        if (file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!['jpg','jpeg','png','gif'].includes(ext)) {
+                alert('Seules les images (.jpg, .jpeg, .png, .gif) sont autorisées.');
+                return;
+            }
+        }
+
+        const formData = new FormData();
+        formData.append('content', text);
+        if (file) {
+            formData.append('media', file);
+        }
+        if (currentConv) {
+            formData.append('conversation_id', currentConv);
+        }
 
         fetch('../php/api/post_message.php', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(payload)
+            method: 'POST',
+            body: formData
         })
             .then(resp => resp.json())
             .then(res => {
                 if (res.status === 'success') {
                     input.value = '';
+                    fileInput.value = '';
                     if (currentConv) loadMessages();
                     else            loadFeed();
                 } else {
@@ -312,16 +361,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         const li = document.createElement('li');
                         li.className = 'candidate-card suggestion-card';
                         li.innerHTML = `
-              <div class="candidate-info">
-                <span class="candidate-name">
-                  ${r.suggestion_prenom} ${r.suggestion_nom}
-                </span>
-                <span class="candidate-meta">
-                  (${r.mutual_count} ami(s), ${r.interest_count} intérêt(s))
-                </span>
-              </div>
-              <button class="btn-add" data-id="${uid}">Ajouter</button>
-            `;
+                            <div class="candidate-info">
+                                <span class="candidate-name">
+                                  ${r.suggestion_prenom} ${r.suggestion_nom}
+                                </span>
+                                <span class="candidate-meta">
+                                  (${r.mutual_count} ami(s), ${r.interest_count} intérêt(s))
+                                </span>
+                            </div>
+                            <button class="btn-add" data-id="${uid}">Ajouter</button>
+                        `;
                         const btn = li.querySelector('button.btn-add');
                         btn.addEventListener('click', () => addFriend(uid, btn));
                         userList.appendChild(li);
@@ -329,19 +378,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (!Array.isArray(userRows)) userRows = [];
-
                 userRows.forEach(u => {
-                    if (recoSet.has(u.id)) {
-                        return;
-                    }
+                    if (recoSet.has(u.id)) return;
                     const li = document.createElement('li');
                     li.className = 'candidate-card normal-card';
                     li.innerHTML = `
-            <div class="candidate-info">
-              <span class="candidate-name">${u.username}</span>
-            </div>
-            <button class="btn-add" data-id="${u.id}">Ajouter</button>
-          `;
+                        <div class="candidate-info">
+                          <span class="candidate-name">${u.username}</span>
+                        </div>
+                        <button class="btn-add" data-id="${u.id}">Ajouter</button>
+                    `;
                     const btn = li.querySelector('button.btn-add');
                     btn.addEventListener('click', () => addFriend(u.id, btn));
                     userList.appendChild(li);

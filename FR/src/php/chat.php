@@ -56,8 +56,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <div id="chat-feed">
                 <!-- Messages / posts insérés par chat.js -->
             </div>
-            <form id="chat-form" class="chat-form">
+            <!-- Formulaire modifié pour accepter un fichier (image/vidéo) -->
+            <form id="chat-form" class="chat-form" enctype="multipart/form-data">
                 <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
+                <input type="file" id="chat-file" accept="image/*,video/*" />
                 <button type="submit">Envoyer</button>
             </form>
         </div>

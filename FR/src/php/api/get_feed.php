@@ -1,52 +1,58 @@
 <?php
 session_start();
 header('Content-Type: application/json; charset=UTF-8');
+require_once __DIR__ . '/../db_connect.php'; // Adaptez le chemin si nécessaire
 
-// Récupération de la connexion PDO (ou adaptez selon votre configuration)
-require_once __DIR__ . '/../db_connect.php';
-
-// Vérification de la session
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    echo json_encode([]);
+    http_response_code(401);
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 try {
-    // On récupère : contenu, date, prénom, nom et photo_path (s’il existe)
+    // Sélection de tous les posts publics, avec l’avatar de l’auteur (photo_path) et le media_path
     $stmt = $conn->prepare("
       SELECT
         p.id,
         p.content,
         p.created_at,
+        p.media_path,
         u.prenom,
         u.nom,
         u.photo_path
-      FROM post AS p
-      JOIN user AS u ON p.author_id = u.id_User
+      FROM post p
+      JOIN user u ON p.author_id = u.id_User
       ORDER BY p.created_at ASC
     ");
     $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $posts = [];
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Si l’utilisateur n’a pas de photo (NULL ou vide), on prend l’image par défaut pdp.png
+    $output = [];
+    foreach ($rows as $row) {
+        // Si l’utilisateur n’a pas de photo de profil, on utilise l’image par défaut
         $photoPath = (isset($row['photo_path']) && trim($row['photo_path']) !== '')
             ? $row['photo_path']
             : 'uploads/photos/pdp.png';
 
-        $posts[] = [
+        // Si le post a un média, on l’inclut, sinon on laisse null
+        $mediaPath = null;
+        if (!empty($row['media_path'])) {
+            $mediaPath = $row['media_path'];
+        }
+
+        $output[] = [
             'id'         => (int)$row['id'],
             'content'    => $row['content'],
             'created_at' => $row['created_at'],
             'prenom'     => $row['prenom'],
             'nom'        => $row['nom'],
-            'photo_path' => $photoPath
+            'photo_path' => $photoPath,
+            'media_path' => $mediaPath
         ];
     }
 
-    echo json_encode($posts, JSON_UNESCAPED_UNICODE);
-
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Erreur interne']);
+    echo json_encode(['error'=>'Erreur interne'], JSON_UNESCAPED_UNICODE);
 }

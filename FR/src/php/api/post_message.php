@@ -8,24 +8,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-$input   = json_decode(file_get_contents('php://input'), true);
-$content = trim($input['content'] ?? '');
-if ($content === '') {
-    echo json_encode(['status'=>'error','message'=>'Message vide'], JSON_UNESCAPED_UNICODE);
-    exit();
-}
+$content = trim($_POST['content'] ?? '');
+$me      = (int)$_SESSION['user_id'];
 
-$me = (int)$_SESSION['user_id'];
-
-// 1) Si on a une conversation_id, envoi privé
-if (!empty($input['conversation_id'])) {
-    $cid = (int)$input['conversation_id'];
-    // 1.a) Vérifier que l’utilisateur appartient à la conv
+// 1) Si conversation_id est défini, c’est un envoi privé
+if (!empty($_POST['conversation_id'])) {
+    $cid = (int)$_POST['conversation_id'];
+    // Vérifier que l’utilisateur appartient bien à cette conversation
     $chk = $conn->prepare("
-      SELECT 1 FROM conversation_user
-       WHERE conversation_id = :cid
-         AND user_id = :me
-       LIMIT 1
+        SELECT 1 
+          FROM conversation_user 
+         WHERE conversation_id = :cid 
+           AND user_id = :me 
+         LIMIT 1
     ");
     $chk->execute(['cid'=>$cid,'me'=>$me]);
     if (!$chk->fetch()) {
@@ -33,26 +28,81 @@ if (!empty($input['conversation_id'])) {
         echo json_encode(['status'=>'error','message'=>'Accès refusé'], JSON_UNESCAPED_UNICODE);
         exit;
     }
-    // 1.b) Insérer dans message
+
+    // On gère l’upload d’une image (uniquement) si présente
+    $mediaPath = '';
+    if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
+        $allowedExt = ['jpg','jpeg','png','gif'];
+        $info = pathinfo($_FILES['media']['name']);
+        $ext  = strtolower($info['extension'] ?? '');
+
+        if (in_array($ext, $allowedExt)) {
+            $targetDir = __DIR__ . '/../../uploads/messages/';
+            if (!file_exists($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            $fileName   = 'msg_' . $me . '_' . time() . '.' . $ext;
+            $destination = $targetDir . $fileName;
+            if (move_uploaded_file($_FILES['media']['tmp_name'], $destination)) {
+                // Chemin relatif pour la BDD (depuis FR/)
+                $mediaPath = 'uploads/messages/' . $fileName;
+            }
+        } else {
+            // Si ce n’est pas une extension autorisée, on ignore la pièce jointe
+            $mediaPath = '';
+        }
+    }
+
+    // Insertion dans la table message
     $stmt = $conn->prepare("
-      INSERT INTO message (conversation_id, from_id, content)
-      VALUES (:cid, :me, :content)
+        INSERT INTO message (conversation_id, from_id, content, media_path)
+        VALUES (:cid, :me, :content, :media_path)
     ");
-    if ($stmt->execute(['cid'=>$cid,'me'=>$me,'content'=>$content])) {
+    $ok = $stmt->execute([
+        'cid'        => $cid,
+        'me'         => $me,
+        'content'    => $content,
+        'media_path' => $mediaPath,
+    ]);
+    if ($ok) {
         echo json_encode(['status'=>'success'], JSON_UNESCAPED_UNICODE);
     } else {
         http_response_code(500);
-        echo json_encode(['status'=>'error','message'=>'Erreur base chat'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['status'=>'error','message'=>'Erreur base messages'], JSON_UNESCAPED_UNICODE);
     }
     exit;
 }
 
 // 2) Sinon, on poste sur le mur public (table `post`)
+$mediaPath = '';
+if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
+    $allowedExt = ['jpg','jpeg','png','gif'];
+    $info = pathinfo($_FILES['media']['name']);
+    $ext  = strtolower($info['extension'] ?? '');
+
+    if (in_array($ext, $allowedExt)) {
+        $targetDir = __DIR__ . '/../../uploads/messages/';
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+        $fileName   = 'msg_' . $me . '_' . time() . '.' . $ext;
+        $destination = $targetDir . $fileName;
+        if (move_uploaded_file($_FILES['media']['tmp_name'], $destination)) {
+            $mediaPath = 'uploads/messages/' . $fileName;
+        }
+    }
+}
+
 $stmt = $conn->prepare("
-  INSERT INTO post (author_id, content)
-  VALUES (:author_id, :content)
+    INSERT INTO post (author_id, content, media_path)
+    VALUES (:author_id, :content, :media_path)
 ");
-if ($stmt->execute(['author_id'=>$me,'content'=>$content])) {
+$ok = $stmt->execute([
+    'author_id' => $me,
+    'content'   => $content,
+    'media_path'=> $mediaPath,
+]);
+if ($ok) {
     echo json_encode(['status'=>'success'], JSON_UNESCAPED_UNICODE);
 } else {
     http_response_code(500);
