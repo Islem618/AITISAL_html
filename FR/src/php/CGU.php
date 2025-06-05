@@ -9,7 +9,7 @@ session_start(); // Start the session at the beginning of each PHP page
     <meta name="viewport" content="width=device-width">
     <link href="../css/CGU.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/normalize.css">
-    <link rel="icon" type="image/x-icon" href="../../images/logonutritium%20-%20Copie.ico" />
+    <link rel="icon" type="image/x-icon" href="../../images/logoAITISAL.ico" />
     <title>AITISAL</title>
 </head>
 <body>
@@ -24,7 +24,7 @@ session_start(); // Start the session at the beginning of each PHP page
 </header>
 <!-- Logo in the top-left corner -->
 <a href="index.php">
-    <img src="../../images/logonutritium.png" id="Logo1" alt="AITISAL Logo" title="AITISAL Logo">
+    <img src="../../images/logoaitisal.png" id="Logo1" alt="AITISAL Logo" title="AITISAL Logo">
 </a>
 <h1>Terms of Use - AITISAL</h1>
 <!-- Notification badge (top-right) -->
@@ -105,7 +105,7 @@ session_start(); // Start the session at the beginning of each PHP page
     <p>AITISAL is responsible for data processing in accordance with applicable laws. <br /><br /><br /><br /></p>
 </footer>
 
-<img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos" title="Footer Logos">
+<img src="../../images/footeraitisal.png" id="LogosFooter" alt="Footer Logos" title="Footer Logos">
 
 <footer>
     <div class="footer">

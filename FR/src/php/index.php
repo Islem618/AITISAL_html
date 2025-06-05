@@ -10,7 +10,7 @@ session_start(); // Démarre la session au début du script
     <link href="../css/index.css" rel="stylesheet" />
     <script src="../js/jquery.min.js"></script>
    
-    <link rel="icon" type="image/x-icon" href="../../images/logonutritium%20-%20Copie.ico" />
+    <link rel="icon" type="image/x-icon" href="../../images/logoAITISAL.ico" />
     <title>AITISAL</title>
     
     
@@ -32,7 +32,7 @@ session_start(); // Démarre la session au début du script
   <body>
     <!--le logo en haut à gauche-->
         <a href="index.php">
-            <img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey">
+            <img src="../../images/logoaitisal.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey">
         </a>
     <?php if (isset($_SESSION['user_id'])): ?>
         <!-- Pastille de notification -->
@@ -54,7 +54,7 @@ if(isset($_SESSION['user_id'])) {
       <h1>
         AITISAL
       </h1>
-      <img src="../../images/homepic.jpg" alt="chanteur" height="300px" />
+      <img src="../../images/lilboy.png" alt="chanteur" height="300px" />
     </div>
     <div class="content-container">
       <div class="left">
@@ -82,7 +82,7 @@ if(isset($_SESSION['user_id'])) {
     </div>
 
   <!--footer gere le bas de page-->
-  <img src="../../images/footernutritium.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Transnoise-->
+  <img src="../../images/footeraitisal.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Transnoise-->
 
 <footer>
   <div class="footer">

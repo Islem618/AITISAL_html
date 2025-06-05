@@ -17,7 +17,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <title>AITISAL</title>
     <link rel="stylesheet" href="../css/normalize-user.css" />
     <link rel="stylesheet" href="../css/espaceuser.css" />
-    <link rel="icon" type="image/x-icon" href="../../images/logonutritium.ico" />
+    <link rel="icon" type="image/x-icon" href="../../images/logoAITISAL.ico" />
   </head>
 
   <header>
@@ -30,7 +30,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
       </nav>
 
   </header>
-  <a href="index.php"><img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey"></a> <!--logo EchoKey-->
+  <a href="index.php"><img src="../../images/logoaitisal.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey"></a> <!--logo EchoKey-->
 
   <div class="welcome-section">
       <h1>Welcome to your space!</h1>
@@ -69,7 +69,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
       </div>
     </div>
 
-  <img src="../../images/footernutritium.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Transnoise-->
+  <img src="../../images/footeraitisal.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Transnoise-->
 
   <!--logo déconnexion-->
   <img src="../../images/déconnexion2.png" id="imgdeco" alt="logo déconnexion" title="logo déconnexion" onmouseover="changerImage('survol')" onmouseout="changerImage('normal')" onclick="deconnexion()">

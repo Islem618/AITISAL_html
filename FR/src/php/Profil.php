@@ -17,7 +17,7 @@ session_start();
     <link
             rel="icon"
             type="image/x-icon"
-            href="../../images/logonutritium%20-%20Copie.ico"
+            href="../../images/logoAITISAL.ico"
     />
 </head>
 
@@ -46,7 +46,7 @@ session_start();
     <!-- le logo en haut à gauche -->
     <a href="index.php">
         <img
-                src="../../images/logonutritium.png"
+                src="../../images/logoaitisal.png"
                 id="Logo1"
                 alt="Logo EchoKey"
                 title="Logo EchoKey"
@@ -455,7 +455,7 @@ session_start();
 <footer>
     <div class="footer">
         <img
-                src="../../images/footernutritium.png"
+                src="../../images/footeraitisal.png"
                 id="LogosFooter"
                 alt="LogosFooter"
                 title="LogosFooter"

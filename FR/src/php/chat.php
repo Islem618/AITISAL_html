@@ -13,7 +13,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link rel="stylesheet" href="../css/normalize.css" />
     <link rel="stylesheet" href="../css/chat.css" />
     <script src="../js/jquery.min.js"></script>
-    <link rel="icon" href="../../images/logonutritium.ico" />
+    <link rel="icon" href="../../images/logoAITISAL.ico" />
     <title>AITISAL</title>
 </head>
 <body>
@@ -75,7 +75,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </div>
 
 <!-- Pied de page & logos -->
-<img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos" />
+<img src="../../images/footeraitisal.png" id="LogosFooter" alt="Footer Logos" />
 <img src="../../images/déconnexion2.png" id="imgdeco"
      alt="Déconnexion" title="Déconnexion"
      onmouseover="changerImage('survol')"
