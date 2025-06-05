@@ -19,7 +19,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link rel="stylesheet" href="../css/interests.css" />
     <script src="../js/jquery.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/logonutritium%20-%20Copie.ico" />
-    <title>AITISAL - Mes intérêts</title>
+    <title>AITISAL</title>
 </head>
 <body>
 <header>
@@ -27,7 +27,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         <ul class="menu">
             <li><a href="index.php">Home</a></li>
             <li><a href="chat.php">Let's Chat !</a></li>
-            <li><a href="espaceuser.php">Profil</a></li>
+            <li><a href="espaceuser.php">Profile</a></li>
         </ul>
     </nav>
 </header>
@@ -42,12 +42,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <ul id="notification-panel"></ul>
 </section>
 <main>
-    <h1>Mes centres d’intérêts</h1>
+    <h1>My interests</h1>
     <form id="interests-form">
         <ul id="interests-list">
             <!-- sera peuplé dynamiquement par JS -->
         </ul>
-        <button type="submit">Enregistrer mes intérêts</button>
+        <button type="submit">Save my interests</button>
     </form>
     <div id="interests-msg" style="margin-top:1rem;color:green;"></div>
 </main>
@@ -56,9 +56,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     /* ─── Les fonctions de déconnexion / hover (inchangées) ───────────────── */
 
     function deconnexion() {
-        var result = confirm("Voulez-vous vraiment vous déconnecter?");
+        var result = confirm("Do you really want to log out?");
         if (result) {
-            alert("Merci de votre visite");
+            alert("Thank you for your visit");
             window.location.href = 'logout.php';
         }
     }
@@ -143,7 +143,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 .then(resData => {
                     if (resData.status === 'success') {
                         msg.style.color = 'green';
-                        msg.textContent = 'Vos intérêts ont bien été enregistrés.';
+                        msg.textContent = 'Your interests have been recorded.';
                     } else {
                         msg.style.color = 'red';
                         msg.textContent = 'Erreur : ' + (resData.message||'');
@@ -166,8 +166,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <div class="footer">
         <nav>
             <ul>
-                <li><a href="CGU.php" id="ga" target="_blank">CGU</a></li>
-                <li><a href="https://www.isep.fr/" id="ga" target="_blank">Nos investisseurs</a></li>
+                <li><a href="CGU.php" id="ga" target="_blank">G.C.U</a></li>
+                <li><a href="https://www.isep.fr/" id="ga" target="_blank">Our investors</a></li>
                 <li><a href="faq.php" id="ga" target="_blank">Contact</a></li>
             </ul>
         </nav>

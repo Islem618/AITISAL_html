@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Bouton “← Chat public” ─────────────────────────────────────────
     const returnBtn = document.createElement('button');
-    returnBtn.textContent        = '← Chat public';
+    returnBtn.textContent        = '← Public Chat';
     returnBtn.className          = 'btn-public';
     returnBtn.style.display      = 'none';
     returnBtn.style.marginBottom = '10px';
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 convs.forEach(c => {
                     const friendName = `${c.friend_prenom} ${c.friend_nom}`;
                     const li = document.createElement('li');
-                    li.textContent = `Chat privé ${friendName}`;
+                    li.textContent = `Private Chat ${friendName}`;
                     li.dataset.id  = c.conversation_id;
                     if (c.conversation_id === currentConv) {
                         li.classList.add('active');
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadConversations();
                     setTimeout(loadMessages, 100);
                 } else {
-                    alert(res.message || 'Impossible d’ajouter cet ami');
+                    alert(res.message || 'Impossible to add this friend');
                     btn.disabled = false;
                 }
             })
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (recoRows.length === 0) {
                     const noRecLi = document.createElement('li');
-                    noRecLi.textContent = 'Aucune suggestion pour l’instant.';
+                    noRecLi.textContent = 'No suggestion for now.';
                     noRecLi.className = 'candidate-card normal-card';
                     userList.appendChild(noRecLi);
                 } else {
@@ -366,10 +366,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                   ${r.suggestion_prenom} ${r.suggestion_nom}
                                 </span>
                                 <span class="candidate-meta">
-                                  (${r.mutual_count} ami(s), ${r.interest_count} intérêt(s))
+                                  (${r.mutual_count} friend(s), ${r.interest_count} interest(s))
                                 </span>
                             </div>
-                            <button class="btn-add" data-id="${uid}">Ajouter</button>
+                            <button class="btn-add" data-id="${uid}">Add</button>
                         `;
                         const btn = li.querySelector('button.btn-add');
                         btn.addEventListener('click', () => addFriend(uid, btn));
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="candidate-info">
                           <span class="candidate-name">${u.username}</span>
                         </div>
-                        <button class="btn-add" data-id="${u.id}">Ajouter</button>
+                        <button class="btn-add" data-id="${u.id}">Add</button>
                     `;
                     const btn = li.querySelector('button.btn-add');
                     btn.addEventListener('click', () => addFriend(u.id, btn));
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error('Erreur buildFriendCandidatesList :', err);
-                userList.innerHTML = '<li>Impossible de charger la liste d’amis potentiels.</li>';
+                userList.innerHTML = '<li>Unable to load potential friends list.</li>';
             });
     }
 

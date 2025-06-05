@@ -1,9 +1,9 @@
 //footer
 // Popup servant à la déconnexion
 function deconnexion() {
-    var result = confirm("Voulez-vous vraiment vous déconnecter?");
+    var result = confirm("Do you really want to log out?");
     if (result == true) {
-        alert("Merci de votre visite");
+        alert("Thank you for your visit");
 
         // Effectuer une redirection vers le script PHP de déconnexion
         window.location.href = 'logout.php';

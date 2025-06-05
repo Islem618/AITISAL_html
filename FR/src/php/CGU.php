@@ -1,125 +1,122 @@
 <?php
-session_start(); // Démarrez la session au début de chaque page PHP
+session_start(); // Start the session at the beginning of each PHP page
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link href="../css/CGU.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/normalize.css">
     <link rel="icon" type="image/x-icon" href="../../images/logonutritium%20-%20Copie.ico" />
-    <title>Akatsuki - Nutritium</title>
-
+    <title>AITISAL</title>
 </head>
 <body>
 <header>
-<nav>
-    <ul class="menu">
-        <li><a href="index.php">Home</a></li>
-        <li><a href="chat.php">Let's Chat !</a></li>
-        <li><a href="espaceuser.php">Profil</a></li>
-    </ul>
-</nav>
-
+    <nav>
+        <ul class="menu">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="chat.php">Let's Chat!</a></li>
+            <li><a href="espaceuser.php">Profile</a></li>
+        </ul>
+    </nav>
 </header>
-<!--le logo en haut à gauche-->
+<!-- Logo in the top-left corner -->
 <a href="index.php">
-    <img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey">
+    <img src="../../images/logonutritium.png" id="Logo1" alt="AITISAL Logo" title="AITISAL Logo">
 </a>
-    <h1>Conditions Générales d'Utilisation - Nutritium</h1>
-<!-- Pastille notification (en haut à droite) -->
+<h1>Terms of Use - AITISAL</h1>
+<!-- Notification badge (top-right) -->
 <span id="notification-badge">
   0
 </span>
 
-<!-- Panneau des notifications (au-dessus du contenu, masqué par défaut) -->
+<!-- Notification panel (hidden by default) -->
 <section id="notification-box">
     <h3>Notifications</h3>
     <ul id="notification-panel"></ul>
 </section>
 
 <div class="section">
-    <h2>1. Objet</h2>
-    <p>Les présentes Conditions Générales d'Utilisation ("CGU") ont pour objet de définir les modalités d’accès et d’utilisation du site internet et de l’application mobile Nutritium (ci-après « le Service ») exploités par la <strong>SAS Nutritium</strong>, au capital de 5 000 €, immatriculée au RCS de Nanterre sous le numéro 123 456 789, dont le siège social est situé à Paris.</p>
-</div>
-
-    <div class="section">
-        <h2>2. Acceptation des CGU</h2>
-        <p>2.1. L’accès et l’utilisation du Service impliquent l’acceptation pleine et entière des présentes CGU. Nutritium se réserve la possibilité de modifier ces CGU à tout moment ; les modifications seront applicables dès leur mise en ligne.</p>
-    </div>
-
-    <div class="section">
-        <h2>3. Description du service</h2>
-        <p>3.1. Nutritium propose un service de paniers alimentaires hebdomadaires à tarif abordable pour les étudiants. L’Utilisateur peut commander un panier ponctuel ou souscrire à un abonnement, via le site internet ou l’application mobile.</p>
-    </div>
-
-    <div class="section">
-        <h2>4. Accès et création de compte</h2>
-        <p>Certains services nécessitent la création d’un compte utilisateur. L’Utilisateur s’engage à fournir des informations exactes, à jour et à en assurer la confidentialité. Il est seul responsable de l’usage de ses identifiants.</p>
-    </div>
-
-<div class="section">
-    <h2>5. Propriété intellectuelle</h2>
-    <p>Les contenus présents sur le Service (textes, images, logos, vidéos, sons…) sont protégés par le droit d’auteur et le droit des marques. Toute reproduction totale ou partielle est interdite sans autorisation expresse de Nutritium.</p>
+    <h2>1. Purpose</h2>
+    <p>These Terms of Use (“Terms”) set forth the conditions under which users may access and use the AITISAL website and mobile application (collectively, the “Service”) operated by <strong>AITISAL</strong>, headquartered in Paris, France.</p>
 </div>
 
 <div class="section">
-    <h2>6. Données personnelles</h2>
-    <p>Les données collectées sont nécessaires à la gestion des comptes et des commandes. Elles sont traitées conformément au Règlement Général sur la Protection des Données (RGPD) et restent confidentielles.</p>
+    <h2>2. Acceptance of Terms</h2>
+    <p>2.1. Access to and use of the Service imply full and unreserved acceptance of these Terms. AITISAL reserves the right to modify these Terms at any time; changes will become effective as soon as they are posted on the Service.</p>
+</div>
+
+<div class="section">
+    <h2>3. Description of the Service</h2>
+    <p>3.1. AITISAL provides a social networking platform specifically for students, designed to foster community, share resources, and combat social isolation. Users may create and customize their profiles, join groups, post content, and interact with other members via the website or mobile application.</p>
+</div>
+
+<div class="section">
+    <h2>4. Account Creation and Access</h2>
+    <p>Certain features of the Service require the creation of a user account. Users agree to provide accurate, current, and complete information during registration and to keep their account credentials confidential. Users are solely responsible for all activities under their accounts.</p>
+</div>
+
+<div class="section">
+    <h2>5. Intellectual Property</h2>
+    <p>All content available on the Service (text, images, logos, videos, audio, etc.) is protected by copyright and trademark law. Unauthorized reproduction, distribution, or commercial use of any material on the Service is strictly prohibited without the express written permission of AITISAL.</p>
+</div>
+
+<div class="section">
+    <h2>6. Personal Data</h2>
+    <p>Personal data collected through the Service is necessary to manage user accounts and facilitate interactions. Such data is processed in accordance with the European General Data Protection Regulation (GDPR) and remains confidential. For more details, please consult our Privacy Policy.</p>
 </div>
 
 <div class="section">
     <h2>7. Cookies</h2>
-    <p>Le Service utilise des cookies pour améliorer l’expérience utilisateur et mesurer l’audience. L’Utilisateur peut configurer son navigateur pour les refuser.</p>
+    <p>The Service uses cookies to improve the user experience and measure audience engagement. Users may configure their browser settings to reject cookies, although some features of the Service may be limited as a result.</p>
 </div>
 
 <div class="section">
-    <h2>8. Responsabilité</h2>
-    <p>Nutritium met en œuvre tous les moyens raisonnables pour assurer la disponibilité et la qualité du Service, mais ne peut garantir l’absence d’erreurs ou d’interruptions. Sa responsabilité ne saurait être engagée pour des dommages indirects.</p>
+    <h2>8. Liability</h2>
+    <p>AITISAL employs all reasonable measures to ensure the availability and quality of the Service but cannot guarantee it will be error-free or uninterrupted. AITISAL’s liability cannot be engaged for indirect damages or losses resulting from the use of the Service.</p>
 </div>
 
 <div class="section">
-    <h2>9. Modification du service</h2>
-    <p>Nutritium se réserve le droit de modifier, suspendre ou interrompre tout ou partie du Service, sans préavis ni indemnité.</p>
+    <h2>9. Modification of the Service</h2>
+    <p>AITISAL reserves the right to modify, suspend, or discontinue any part or feature of the Service at any time, without notice or liability.</p>
 </div>
 
 <div class="section">
-    <h2>10. Durée et résiliation</h2>
-    <p>Les présentes CGU sont applicables pendant toute la durée d’accès au Service. Nutritium peut suspendre ou supprimer un compte en cas de manquement aux CGU.</p>
+    <h2>10. Term and Termination</h2>
+    <p>These Terms remain in effect for as long as the user has access to the Service. AITISAL reserves the right to suspend or delete any user account in the event of a breach of these Terms.</p>
 </div>
 
 <div class="section">
-    <h2>11. Loi applicable et juridiction</h2>
-    <p>Les présentes CGU sont soumises au droit français. Tout litige sera porté devant les tribunaux compétents de Nanterre.</p>
+    <h2>11. Governing Law and Jurisdiction</h2>
+    <p>These Terms are governed by French law. Any dispute arising out of or in connection with these Terms shall be submitted to the competent courts of Paris.</p>
 </div>
 
 <div class="section">
     <h2>12. Contact</h2>
-    <p>Pour toute question concernant ces CGU :</p>
-    <p><a href="faq.php" id="ga" target="_blank">Contact</a></p>
+    <p>For any questions regarding these Terms:</p>
+    <p><a href="faq.php" id="ga" target="_blank">Contact Us</a></p>
 </div>
-
 
 <footer class="mentions-legales">
-    <h2>Mentions légales :</h2>
-    <p>Nutritium est un service édité par la SAS Nutritium. Toute utilisation du Service est soumise aux présentes Conditions Générales d'Utilisation.</p>
-    <p>La SAS Nutritium est responsable du traitement des données conformément aux lois en vigueur. <br /><br /><br /><br /></p>
+    <h2>Legal Notice:</h2>
+    <p>AITISAL is operated by AITISAL. Any use of the Service is subject to these Terms of Use.</p>
+    <p>AITISAL is responsible for data processing in accordance with applicable laws. <br /><br /><br /><br /></p>
 </footer>
 
-    <img src="../../images/footernutritium.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter"> <!--logo Nutritium-->
+<img src="../../images/footernutritium.png" id="LogosFooter" alt="Footer Logos" title="Footer Logos">
 
 <footer>
-  <div class="footer">
-  <nav>
-    <ul>
-      <li><a href="CGU.php" id="ga" target="_blank">C.G.U</a></li>
-      <li><a href="https://www.isep.fr/" id="ga" target="_blank">Nos investisseurs</a></li>
-      <li><a href="faq.php" id="ga" target="_blank">Contact</a></li>
-    </ul>
-  </nav>
-</div>
+    <div class="footer">
+        <nav>
+            <ul>
+                <li><a href="CGU.php" id="ga" target="_blank">G.C.U</a></li>
+                <li><a href="https://www.isep.fr/" id="ga" target="_blank">Our investors</a></li>
+                <li><a href="faq.php" id="ga" target="_blank">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
 </footer>
 
 <script src="../js/CGU.js"></script>

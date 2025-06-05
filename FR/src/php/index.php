@@ -11,7 +11,7 @@ session_start(); // Démarre la session au début du script
     <script src="../js/jquery.min.js"></script>
    
     <link rel="icon" type="image/x-icon" href="../../images/logonutritium%20-%20Copie.ico" />
-    <title>Akatsuki - Nutritium</title>
+    <title>AITISAL</title>
     
     
   </head>
@@ -23,7 +23,7 @@ session_start(); // Démarre la session au début du script
       <ul class="menu">
         <li><a href="index.php">Home</a></li>
         <li><a href="chat.php">Let's Chat !</a></li>
-        <li><a href="espaceuser.php">Profil</a></li>
+        <li><a href="espaceuser.php">Profile</a></li>
       </ul>
     </nav>
 
@@ -47,35 +47,35 @@ session_start(); // Démarre la session au début du script
 
     <?php
 if(isset($_SESSION['user_id'])) {
-  echo '<p class="welcome-message">Bienvenue ' . $_SESSION['prenom'] . ' !' . '</p>';}
+  echo '<p class="welcome-message">Welcome ' . $_SESSION['prenom'] . ' !' . '</p>';}
   ?>
     <!--gere le texte au milieu de la page-->
     <div class="content">
       <h1>
-        Nutritium
+        AITISAL
       </h1>
       <img src="../../images/homepic.jpg" alt="chanteur" height="300px" />
     </div>
     <div class="content-container">
       <div class="left">
-        <h1 class="Nutritium">Apporter une solution durable <br /> A la précarité étudiante </h1>
+        <h1 class="Nutritium">Bring a durable solution <br /> To social isolation! </h1>
         <p class="paragraphe">
-            <br /> Chaque année, les files d’étudiants devant les banques alimentaires s’allongent. Ces scènes sont d’autant plus marquantes lorsque des mesures comme les repas à 1 € pour tous au CROUS sont rejetées. Face à ce constat alarmant, nous avons décidé de proposer une solution moderne et pérenne : Nutritium, une structure conçue pour répondre efficacement à ce problème grâce à des modèles de financement actuels et des partenariats stratégiques.
+            <br /> Every year, student social isolation increases, but AITISAL, our new student social network, offers an effective solution thanks to its back-to-basics approach: no ads, no disruptions, just you, your friends, and the world.
         </p>
     <br />
-    <p class="paragraphe"> C’est avec ambition et détermination que nous portons le projet de Nutritium, une structure conçue pour aider un maximum de personnes à se nourrir dignement à un coût minimal, tout en répondant de manière durable à une problématique sociale urgente.</p>
+    <p class="paragraphe"> It is with ambition and determination that we are carrying out the AITISAL project, a structure designed to help as many people as possible come together for free, while responding sustainably to an urgent social problem.</p>
 <br />
-        <p class="paragraphe"> Géographiquement basés à l’incubateur ISEP d’ Issy-Les-Moulineaux, notre démarche commencera à Paris et sa banlieue, avec l'ambition de nous étendre progressivement à l'échelle nationale d’ici 3 ans.</p><br />
+        <p class="paragraphe"> Geographically based at the ISEP incubator in Issy-Les-Moulineaux, our approach will begin in these premises, with the ambition of finding larger premises and expanding within 3 years.</p><br />
       </div>
     </div>
     <div class="buton">
      
 <?php
 if(isset($_SESSION['user_id'])) {
-  echo '<button class="cn" id="scrollButton"><a href="logout.php">Souhaitez vous vous déconnecter</a></button>';
+  echo '<button class="cn" id="scrollButton"><a href="logout.php">Would you like to log out?</a></button>';
 } else {
   // Si l'utilisateur n'est pas connecté, affichez le bouton de connexion
-  echo '<button class="cn" id="scrollButton"><a href="Connexion.php">Connectez Vous !</a></button>';
+  echo '<button class="cn" id="scrollButton"><a href="Connexion.php">Sign In !</a></button>';
 }
 ?>
       </button>
@@ -88,8 +88,8 @@ if(isset($_SESSION['user_id'])) {
   <div class="footer">
   <nav>
     <ul>
-      <li><a href="CGU.php" id="ga" target="_blank">C.G.U</a></li>
-      <li><a href="https://www.isep.fr/" id="ga" target="_blank">Nos investisseurs</a></li>
+      <li><a href="CGU.php" id="ga" target="_blank">G.C.U</a></li>
+      <li><a href="https://www.isep.fr/" id="ga" target="_blank">Our investors</a></li>
       <li><a href="faq.php" id="ga" target="_blank">Contact</a></li>
     </ul>
   </nav>

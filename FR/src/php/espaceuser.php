@@ -14,7 +14,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>TransNoise - EchoKey</title>
+    <title>AITISAL</title>
     <link rel="stylesheet" href="../css/normalize-user.css" />
     <link rel="stylesheet" href="../css/espaceuser.css" />
     <link rel="icon" type="image/x-icon" href="../../images/logonutritium.ico" />
@@ -25,7 +25,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
           <ul class="menu">
               <li><a href="index.php">Home</a></li>
               <li><a href="chat.php">Let's Chat !</a></li>
-              <li><a href="espaceuser.php">Profil</a></li>
+              <li><a href="espaceuser.php">Profile</a></li>
           </ul>
       </nav>
 
@@ -33,7 +33,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
   <a href="index.php"><img src="../../images/logonutritium.png" id="Logo1" alt="Logo EchoKey" title="Logo EchoKey"></a> <!--logo EchoKey-->
 
   <div class="welcome-section">
-      <h1>Bienvenue dans votre espace !</h1>
+      <h1>Welcome to your space!</h1>
   </div>
   <!-- Pastille notification (en haut à droite) -->
   <span id="notification-badge">

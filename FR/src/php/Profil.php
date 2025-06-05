@@ -6,7 +6,7 @@ session_start();
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <title>Akatsuki - Nutritium</title>
+    <title>AITISAL</title>
     <link rel="stylesheet" href="../css/normalize.css" />
     <link rel="stylesheet" href="../css/Profil.css" />
     <link
@@ -27,7 +27,7 @@ session_start();
         <ul class="menu">
             <li><a href="index.php">Home</a></li>
             <li><a href="chat.php">Let's Chat !</a></li>
-            <li><a href="espaceuser.php">Profil</a></li>
+            <li><a href="espaceuser.php">Profile</a></li>
         </ul>
     </nav>
 </header>
@@ -67,7 +67,7 @@ session_start();
                                     alt="Users Icon"
                             />
                             <button onclick="showSection('coordonnees')">
-                                Coordonnées
+                                Contact details
                             </button>
                         </label>
                     </li>
@@ -79,7 +79,7 @@ session_start();
                                     alt="Paramètres des engrenages"
                             />
                             <button onclick="showSection('parametres')">
-                                Paramètres
+                                Settings
                             </button>
                         </label>
                     </li>
@@ -91,7 +91,7 @@ session_start();
                                     alt="Icône Photo"
                             />
                             <button onclick="showSection('photo_profil')">
-                                Photo de profil
+                                Profile picture
                             </button>
                         </label>
                     </li>
@@ -105,12 +105,12 @@ session_start();
                             src="../../images/se-deconnecter.png"
                             alt="Exit Icon"
                     />
-                    Déconnexion
+                    Sign out
                 </button>
             </div>
 
             <div class="profile-info">
-                <h1>Édition du Profil</h1>
+                <h1>Profile Edition</h1>
 
                 <?php
                 // Connexion à la base
@@ -166,7 +166,7 @@ session_start();
                         style="display: none"
                 >
                     <div class="form-group mb-3">
-                        <label class="col-md-4 control-label">Prénom</label>
+                        <label class="col-md-4 control-label">First name</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -186,7 +186,7 @@ session_start();
                     </div>
 
                     <div class="form-group mb-3">
-                        <label class="col-md-4 control-label">Nom</label>
+                        <label class="col-md-4 control-label">Name</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -226,7 +226,7 @@ session_start();
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Téléphone</label>
+                        <label class="col-md-4 control-label">Phone</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -246,7 +246,7 @@ session_start();
                     </div>
 
                     <div class="form-group mb-2">
-                        <label class="col-md-4 control-label">Adresse</label>
+                        <label class="col-md-4 control-label">Adress</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -266,7 +266,7 @@ session_start();
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Ville</label>
+                        <label class="col-md-4 control-label">City</label>
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -293,10 +293,10 @@ session_start();
                         class="section profile"
                         style="display: none"
                 >
-                    <h5>Modifier votre Mot de Passe en toute sécurité</h5>
+                    <h5>Change your password safely</h5>
                     <div class="form-group mb-5">
                         <div class="col-md-12 inputGroupContainer">
-                            <label class="control-label">Mot de passe actuel</label>
+                            <label class="control-label">Current password</label>
                             <div class="input-group">
                     <span class="input-group-addon"
                     ><i class="glyphicon glyphicon-user"></i
@@ -304,7 +304,7 @@ session_start();
                                 <input
                                         id="current_password"
                                         name="current_password"
-                                        placeholder="Mot de passe actuel"
+                                        placeholder="Current password"
                                         class="form-control"
                                         type="password"
                                 />
@@ -313,7 +313,7 @@ session_start();
                     </div>
                     <div class="form-group mb-5">
                         <div class="col-md-12 inputGroupContainer">
-                            <label class="control-label">Nouveau mot de passe</label>
+                            <label class="control-label">New password</label>
                             <div class="input-group">
                     <span class="input-group-addon"
                     ><i class="glyphicon glyphicon-user"></i
@@ -321,7 +321,7 @@ session_start();
                                 <input
                                         id="new_password"
                                         name="new_password"
-                                        placeholder="Nouveau mot de passe"
+                                        placeholder="New password"
                                         class="form-control"
                                         type="password"
                                 />
@@ -331,7 +331,7 @@ session_start();
                     <div class="form-group mb-0">
                         <div class="col-md-12 inputGroupContainer">
                             <label class="control-label"
-                            >Confirmer le nouveau mot de passe</label
+                            >Confirm The New Password</label
                             >
                             <div class="input-group">
                     <span class="input-group-addon"
@@ -340,7 +340,7 @@ session_start();
                                 <input
                                         id="confirm_password"
                                         name="confirm_password"
-                                        placeholder="Confirmer le nouveau mot de passe"
+                                        placeholder="Confirm The New Password"
                                         class="form-control"
                                         type="password"
                                 />
@@ -357,7 +357,7 @@ session_start();
                         class="section profile"
                         style="display: none; text-align: center;"
                 >
-                    <h3>Modifier votre Photo de profil</h3>
+                    <h3>Change your profile picture</h3>
 
                     <!-- Afficher la miniature actuelle (si déjà enregistrée) -->
                     <?php if (!empty($photoPath)) : ?>
@@ -394,7 +394,7 @@ session_start();
                     >
                         <div class="form-group">
                             <label for="profile_photo"
-                            >Sélectionnez un fichier :</label
+                            >Pick a file :</label
                             >
                             <input
                                     type="file"
@@ -405,7 +405,7 @@ session_start();
                             />
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            Changer la photo
+                            Change the picture
                         </button>
                     </form>
                 </div>
@@ -418,7 +418,7 @@ session_start();
                         onclick="activerEdition()"
                         style="display: none"
                 >
-                    Modifier
+                    Change
                 </button>
                 <button
                         class="Edition"
@@ -427,7 +427,7 @@ session_start();
                         onclick="enregistrerEdition()"
                         style="display: none"
                 >
-                    Enregistrer
+                    Save
                 </button>
                 <button
                         class="Edition"
@@ -436,7 +436,7 @@ session_start();
                         style="display: none"
                         onclick="majPassword()"
                 >
-                    Mettre à jour
+                    Update
                 </button>
                 <button
                         class="Edition"
@@ -445,7 +445,7 @@ session_start();
                         style="display: none"
                         onclick="annulerEdition()"
                 >
-                    Annuler
+                    Cancel
                 </button>
             </div>
         </div>
@@ -462,10 +462,10 @@ session_start();
         />
         <nav>
             <ul>
-                <li><a href="CGU.php" id="ga" target="_blank">C.G.U</a></li>
+                <li><a href="CGU.php" id="ga" target="_blank">G.C.U</a></li>
                 <li>
                     <a href="https://www.isep.fr/" id="ga" target="_blank"
-                    >Nos investisseurs</a
+                    >Our investors</a
                     >
                 </li>
                 <li><a href="faq.php" id="ga" target="_blank">Contact</a></li>

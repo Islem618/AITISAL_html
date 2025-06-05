@@ -14,7 +14,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <link rel="stylesheet" href="../css/chat.css" />
     <script src="../js/jquery.min.js"></script>
     <link rel="icon" href="../../images/logonutritium.ico" />
-    <title>Let's Chat !</title>
+    <title>AITISAL</title>
 </head>
 <body>
 <!-- Barre de menu -->
@@ -27,7 +27,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </nav>
 
 <!-- Titre principal -->
-<h1>Commençons à discuter et trouvez vos amis !</h1>
+<h1>Let's start chatting and find your friends!</h1>
 
 <!-- Pastille notification (en haut à droite) -->
 <span id="notification-badge">
@@ -44,7 +44,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <div class="container clearfix">
     <!-- Section “Mes conversations” (gauche) -->
     <section id="conversations-section" class="section-box">
-        <h2>Mes conversations</h2>
+        <h2>My conversations</h2>
         <ul id="conversation-list">
             <!-- Peuplement par chat.js -->
         </ul>
@@ -58,7 +58,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             </div>
             <!-- Formulaire modifié pour accepter un fichier (image/vidéo) -->
             <form id="chat-form" class="chat-form" enctype="multipart/form-data">
-                <input type="text" id="chat-input" placeholder="Écrivez un message …" autocomplete="off" />
+                <input type="text" id="chat-input" placeholder="Write a message …" autocomplete="off" />
                 <input type="file" id="chat-file" accept="image/*,video/*" />
                 <button type="submit">Envoyer</button>
             </form>
@@ -67,7 +67,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
     <!-- Section “Amis potentiels” (droite) -->
     <section id="friends-section" class="section-box">
-        <h2>Amis potentiels</h2>
+        <h2>Potential friends</h2>
         <ul id="friend-candidates-list">
             <!-- Peuplement par chat.js -->
         </ul>
@@ -86,8 +86,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <div class="footer">
         <nav>
             <ul>
-                <li><a href="CGU.php" target="_blank">C.G.U</a></li>
-                <li><a href="https://www.isep.fr/" target="_blank">Nos investisseurs</a></li>
+                <li><a href="CGU.php" target="_blank">G.C.U</a></li>
+                <li><a href="https://www.isep.fr/" target="_blank">Our investors</a></li>
                 <li><a href="faq.php" target="_blank">Contact</a></li>
             </ul>
         </nav>
