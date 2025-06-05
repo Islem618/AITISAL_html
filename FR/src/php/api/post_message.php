@@ -11,7 +11,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 $content = trim($_POST['content'] ?? '');
 $me      = (int)$_SESSION['user_id'];
 
-// 1) Si conversation_id est défini, c’est un envoi privé
+// 1) Si conversation_id est défini → message privé
 if (!empty($_POST['conversation_id'])) {
     $cid = (int)$_POST['conversation_id'];
     // Vérifier que l’utilisateur appartient bien à cette conversation
@@ -29,7 +29,7 @@ if (!empty($_POST['conversation_id'])) {
         exit;
     }
 
-    // On gère l’upload d’une image (uniquement) si présente
+    // Gestion de l’upload d’une image (uniquement) si présente
     $mediaPath = '';
     if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
         $allowedExt = ['jpg','jpeg','png','gif'];
@@ -37,20 +37,19 @@ if (!empty($_POST['conversation_id'])) {
         $ext  = strtolower($info['extension'] ?? '');
 
         if (in_array($ext, $allowedExt)) {
-            $targetDir = __DIR__ . '/../../uploads/messages/';
+            // → on veut ARRIVER dans FR\uploads\messages\
+            $targetDir = __DIR__ . '/../../../uploads/messages/';
             if (!file_exists($targetDir)) {
                 mkdir($targetDir, 0777, true);
             }
-            $fileName   = 'msg_' . $me . '_' . time() . '.' . $ext;
+            $fileName    = 'msg_' . $me . '_' . time() . '.' . $ext;
             $destination = $targetDir . $fileName;
             if (move_uploaded_file($_FILES['media']['tmp_name'], $destination)) {
-                // Chemin relatif pour la BDD (depuis FR/)
+                // Stocker en BDD le chemin relatif depuis FR/, par ex "uploads/messages/xxx.jpg"
                 $mediaPath = 'uploads/messages/' . $fileName;
             }
-        } else {
-            // Si ce n’est pas une extension autorisée, on ignore la pièce jointe
-            $mediaPath = '';
         }
+        // Si extension non autorisée, $mediaPath reste vide.
     }
 
     // Insertion dans la table message
@@ -73,7 +72,7 @@ if (!empty($_POST['conversation_id'])) {
     exit;
 }
 
-// 2) Sinon, on poste sur le mur public (table `post`)
+// 2) Sinon → post public (table `post`)
 $mediaPath = '';
 if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
     $allowedExt = ['jpg','jpeg','png','gif'];
@@ -81,11 +80,12 @@ if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
     $ext  = strtolower($info['extension'] ?? '');
 
     if (in_array($ext, $allowedExt)) {
-        $targetDir = __DIR__ . '/../../uploads/messages/';
+        // → toujours FR\uploads\messages\
+        $targetDir = __DIR__ . '/../../../uploads/messages/';
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
         }
-        $fileName   = 'msg_' . $me . '_' . time() . '.' . $ext;
+        $fileName    = 'msg_' . $me . '_' . time() . '.' . $ext;
         $destination = $targetDir . $fileName;
         if (move_uploaded_file($_FILES['media']['tmp_name'], $destination)) {
             $mediaPath = 'uploads/messages/' . $fileName;

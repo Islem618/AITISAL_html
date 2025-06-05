@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json; charset=UTF-8');
-require_once __DIR__ . '/../db_connect.php';  // On est déjà dans FR/src/php/api
+require_once __DIR__ . '/../db_connect.php';
 
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
@@ -16,7 +16,7 @@ if ($cid <= 0) {
     exit;
 }
 
-// Vérifier que l’utilisateur appartient à cette conversation
+// Vérifier que l’utilisateur appartient bien à cette conversation
 $chk = $conn->prepare("
     SELECT 1
       FROM conversation_user
@@ -52,20 +52,15 @@ $stmt->execute(['cid'=>$cid]);
 
 $msgs = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    // Photo de profil : si vide, on renvoie le chemin par défaut
+    // Photo de profil (ou fallback sur uploads/photos/pdp.png)
     $rawPhoto = (isset($row['photo_path']) && trim($row['photo_path']) !== '')
         ? $row['photo_path']
         : 'uploads/photos/pdp.png';
 
-    // Media image : si présent, on le renvoie, sinon chaîne vide
+    // Media_image (ou vide)
     $rawMedia = (isset($row['media_path']) && trim($row['media_path']) !== '')
         ? $row['media_path']
         : '';
-
-    // On renvoie directement le chemin relatif tel quel (sans "src/")
-    // JS ajoutera "../.." devant pour atteindre FR/uploads/...
-    $photoPath = $rawPhoto;
-    $mediaPath = $rawMedia !== '' ? 'src/' . ltrim($rawMedia, '/') : '';
 
     $msgs[] = [
         'id'         => (int)$row['id'],
@@ -74,8 +69,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         'created_at' => $row['created_at'],
         'prenom'     => $row['prenom'],
         'nom'        => $row['nom'],
-        'photo_path' => $photoPath,
-        'media_path' => $mediaPath
+        'photo_path' => $rawPhoto,   // ex “uploads/photos/pdp.png” ou “uploads/photos/profil_32.jpg”
+        'media_path' => $rawMedia    // ex “uploads/messages/msg_32_12345.jpg” ou “”
     ];
 }
 
