@@ -27,15 +27,7 @@ function deconnexion() {
     }
 }
 
-// ─── Hover sur le bouton déconnexion ─────────────────────────────
-function changerImage(etat) {
-    const img = document.getElementById("imgdeco");
-    if (!img) return;
-    img.src = (etat === "survol")
-        ? "../../images/déconnexion2-hover.png"
-        : "../../images/déconnexion2.png";
-}
-
+// ─── Code principal pour le chat ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const feed          = document.getElementById('chat-feed');
     const form          = document.getElementById('chat-form');
@@ -45,10 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const me            = window.currentUserId || 0;
     let   currentConv   = null;
 
-    // Quitter si on n'est pas sur chat.php
+    // Si on n’est pas sur chat.php, on s’arrête
     if (!feed || !form || !input || !userList || !convList) return;
 
-    // ─── Création du bouton “← Chat public” ─────────────────────────
+    // ─── Bouton “← Chat public” ─────────────────────────────────────────
     const returnBtn = document.createElement('button');
     returnBtn.textContent        = '← Chat public';
     returnBtn.className          = 'btn-public';
@@ -94,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     convList.appendChild(li);
                 });
 
-                // Si aucune sélection, cliquer la première
+                // Sélection automatique de la première conversation si aucune sélection actuelle
                 if (!currentConv && convs.length) {
                     const firstLi = convList.querySelector('li[data-id]');
                     if (firstLi) firstLi.click();
@@ -106,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 2) Charger les messages privés ──────────────────────────────
+    // ─── 2) Charger les messages privés (avec avatars) ───────────────
     function loadMessages() {
         if (!currentConv) return;
         fetch(`../php/api/get_messages.php?conversation_id=${currentConv}`)
@@ -114,13 +106,23 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(msgs => {
                 feed.innerHTML = '';
                 msgs.forEach(m => {
+                    // Création d’une bulle de message
                     const div = document.createElement('div');
                     div.className = 'message ' + (m.from_id === me ? 'me' : 'them');
+
+                    // On récupère l’URL de l’avatar. Comme on est dans chat.js (FR/src/js),
+                    // on remonte de deux niveaux pour atteindre la racine FR/, puis on ajoute photo_path.
+                    const avatarUrl = `../../${m.photo_path}`;
+
+                    // Injection du HTML avec l’avatar, le nom, l’horodatage et le contenu
                     div.innerHTML = `
-            <strong>${m.prenom} ${m.nom}</strong>
-            <small>${m.created_at}</small>
-            <p>${m.content}</p>
-          `;
+                      <div class="message-header">
+                        <img class="avatar" src="${avatarUrl}" alt="Photo de ${m.prenom}" />
+                        <strong>${m.prenom} ${m.nom}</strong>
+                        <small class="timestamp">${m.created_at}</small>
+                      </div>
+                      <div class="message-content">${m.content}</div>
+                    `;
                     feed.appendChild(div);
                 });
                 feed.scrollTop = feed.scrollHeight;
@@ -131,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 3) Charger le chat public ───────────────────────────────────
+    // ─── 3) Charger le chat public (avec avatars) ────────────────────
     function loadFeed() {
         fetch('../php/api/get_feed.php')
             .then(resp => resp.json())
@@ -140,11 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 posts.forEach(p => {
                     const div = document.createElement('div');
                     div.className = 'post';
+
+                    // On génère l’URL absolu de l’avatar (remonter de 2 niveaux puis photo_path)
+                    const avatarUrlPub = `../../${p.photo_path}`;
+
                     div.innerHTML = `
-            <strong>${p.username}</strong>
-            <small>${p.created_at}</small>
-            <p>${p.content}</p>
-          `;
+                      <div class="message-header">
+                        <img class="avatar" src="${avatarUrlPub}" alt="Photo de ${p.prenom}" />
+                        <strong>${p.prenom} ${p.nom}</strong>
+                        <small class="timestamp">${p.created_at}</small>
+                      </div>
+                      <div class="message-content">${p.content}</div>
+                    `;
                     feed.appendChild(div);
                 });
                 feed.scrollTop = feed.scrollHeight;
@@ -192,9 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(resp => resp.json())
             .then(res => {
                 if (res.status === 'success') {
-                    // Recharger la liste “Amis potentiels”
                     buildFriendCandidatesList();
-                    // Ouvrir la conversation automatique
                     currentConv = res.conversation_id;
                     returnBtn.style.display = 'block';
                     loadConversations();
@@ -222,19 +229,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadConversations();
                     setTimeout(loadMessages, 100);
                 } else {
-                    // Créer la conversation si elle n’existe pas
                     fetch('../php/api/create_conversation.php', {
                         method:  'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body:    JSON.stringify({ friend_id: friendId })
                     })
-                        .then(resp => {
-                            if (!resp.ok) {
-                                return resp.json().then(errObj => {
+                        .then(resp2 => {
+                            if (!resp2.ok) {
+                                return resp2.json().then(errObj => {
                                     throw new Error(errObj.message || 'Erreur interne');
                                 });
                             }
-                            return resp.json();
+                            return resp2.json();
                         })
                         .then(data2 => {
                             if (data2.status === 'success' && data2.conversation_id) {
@@ -260,11 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── 7) Construire / afficher “Amis potentiels” ────────────────────
     function buildFriendCandidatesList() {
-        // 1) On récupère d’abord les recommandations triées par SQL
         fetch('../php/api/get_recommendations.php')
-            .then(res => res.text())       // on récupère d’abord la réponse brute
+            .then(res => res.text())
             .then(txt => {
-                // Si la réponse n’est pas un JSON bien formé, on loggue et on quitte
                 try {
                     return JSON.parse(txt);
                 } catch (e) {
@@ -273,8 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .then(recoRows => {
-                console.log('get_recommendations →', recoRows);
-                // 2) Ensuite, on récupère la liste brute des utilisateurs non-amis
                 return fetch('../php/api/get_users.php')
                     .then(res2 => res2.text())
                     .then(txt2 => {
@@ -290,27 +292,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             })
             .then(({ recoRows, userRows }) => {
-                // 3) Construire un Set pour identifier d’un coup d’œil les IDs déjà en recoRows
                 const recoSet = new Set();
                 if (Array.isArray(recoRows)) {
                     recoRows.forEach(r => recoSet.add(r.suggestion_id));
                 } else {
-                    recoRows = []; // prévenir tout souci si ce n’est pas un tableau
+                    recoRows = [];
                 }
 
-                // 4) Vider la section avant d’ajouter de nouveaux <li>
                 userList.innerHTML = '';
 
-                // === a) On affiche d’abord chaque recommendation dans l’ordre renvoyé par PHP ===
                 if (recoRows.length === 0) {
-                    // Si AUCUNE recommandation, on peut afficher un message
                     const noRecLi = document.createElement('li');
                     noRecLi.textContent = 'Aucune suggestion pour l’instant.';
                     noRecLi.className = 'candidate-card normal-card';
                     userList.appendChild(noRecLi);
                 } else {
                     recoRows.forEach(r => {
-                        // r contient { suggestion_id, suggestion_prenom, suggestion_nom, mutual_count, interest_count }
                         const uid = r.suggestion_id;
                         const li = document.createElement('li');
                         li.className = 'candidate-card suggestion-card';
@@ -331,13 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // === b) Ensuite, on affiche TOUS les autres userRows non encore en recoSet ===
                 if (!Array.isArray(userRows)) userRows = [];
 
                 userRows.forEach(u => {
-                    // u donne { id, username }
                     if (recoSet.has(u.id)) {
-                        // S’il est déjà dans les recommandations (grâce au Set), on le saute
                         return;
                     }
                     const li = document.createElement('li');
@@ -359,18 +353,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // ─── 8) Chargement initial ─────────────────────────────────────────
+    // ─── 8) Chargement initial + intervals ──────────────────────────
     loadConversations();
     buildFriendCandidatesList();
     loadFeed();
 
-    // Rafraîchissement régulier du chat (public/privé)
     setInterval(() => {
         if (currentConv) loadMessages();
         else            loadFeed();
     }, 2000);
 
-    // Réactualiser la liste “Amis potentiels” toutes les 30 secondes
     setInterval(() => {
         buildFriendCandidatesList();
     }, 30000);

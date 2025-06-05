@@ -428,3 +428,19 @@ h1 {
     max-width: 320px;
   }
 }
+
+.photo-profil {
+  margin: 15px 0;
+  text-align: center;
+}
+#img-profil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.photo-profil input[type="file"] {
+  display: block;
+  margin: 10px auto;
+}

@@ -1,43 +1,29 @@
 function updateModifierButtonState(sectionId) {
-  var modifierButton = document.getElementById("Modifier");
-  var majButton = document.getElementById("Maj"); // Utilisez "Maj" à la place de "MettreAJour"
-  var annulerEditionButton = document.getElementById("AnnulerEdition");
+  const modifierButton = document.getElementById("Modifier");
+  const majButton = document.getElementById("Maj");
+  const annulerButton = document.getElementById("AnnulerEdition");
 
-  // Afficher le bouton "Modifier" uniquement si la section "coordonnees" est sélectionnée
-  modifierButton.style.display =
-    sectionId === "coordonnees" ? "inline" : "none";
-
-  // Afficher le bouton "Mettre à jour" uniquement si la section "parametres" est sélectionnée
+  modifierButton.style.display = sectionId === "coordonnees" ? "inline" : "none";
   majButton.style.display = sectionId === "parametres" ? "inline" : "none";
 
-  // Masquer le bouton "Enregistrer" lors de la sélection d'une nouvelle section
   document.getElementById("Enregistrer").style.display = "none";
-  document.getElementById("AnnulerEdition").style.display = "none";
+  annulerButton.style.display = "none";
 }
 
 function activerEdition() {
-  var champsEditable = document.querySelectorAll(
-    "#coordonnees input[disabled]:not(#first_name):not(#last_name):not(#email)"
+  const champs = document.querySelectorAll(
+      "#coordonnees input[disabled]:not(#first_name):not(#last_name):not(#email)"
   );
-  console.log(champsEditable); // Afficher les champs dans la console pour déboguer
+  champs.forEach((champ) => champ.removeAttribute("disabled"));
 
-  champsEditable.forEach(function (champ) {
-    champ.removeAttribute("disabled");
-  });
-
-  // Afficher le bouton "Enregistrer" et masquer le bouton "Modifier"
   document.getElementById("Enregistrer").style.display = "inline";
   document.getElementById("AnnulerEdition").style.display = "inline";
   document.getElementById("Modifier").style.display = "none";
 }
 
 function desactiverChampsCoordonnees() {
-  var champsCoordonnees = document.querySelectorAll(
-    "#coordonnees input:not([disabled])"
-  );
-  champsCoordonnees.forEach(function (champ) {
-    champ.setAttribute("disabled", true);
-  });
+  const champs = document.querySelectorAll("#coordonnees input:not([disabled])");
+  champs.forEach((champ) => champ.setAttribute("disabled", true));
 
   document.getElementById("Modifier").style.display = "inline";
   document.getElementById("Enregistrer").style.display = "none";
@@ -45,118 +31,107 @@ function desactiverChampsCoordonnees() {
 }
 
 function showSection(sectionId) {
-  const sections = document.querySelectorAll(".section.profile");
-  sections.forEach((section) => {
-    if (section.id === sectionId) {
-      section.style.display = "block";
-    } else {
-      section.style.display = "none";
-    }
+  document.querySelectorAll(".section.profile").forEach((section) => {
+    section.style.display = section.id === sectionId ? "block" : "none";
   });
 
-  // Mettre à jour l'état du bouton Modifier
   updateModifierButtonState(sectionId);
 }
 
 function enregistrerEdition() {
-  var phone = document.getElementById("phone").value;
-  var adresse = document.getElementById("adresse").value;
-  var city = document.getElementById("city").value;
+  const phone = document.getElementById("phone").value;
+  const adresse = document.getElementById("adresse").value;
+  const city = document.getElementById("city").value;
+
   desactiverChampsCoordonnees();
 
-  // Enregistrer les modifications dans la base de données
-  var request = $.ajax({
+  $.ajax({
     url: "update_profile.php",
     type: "POST",
-    data: {
-      phone: phone,
-      adresse: adresse,
-      city: city,
-    },
+    data: { phone, adresse, city },
     dataType: "json",
-    success: function (response) {
-      if (response.status === "success") {
-        alert("Profile updated successfully!");
-      } else {
-        alert("Failed to update profile.");
-      }
+    success: function (res) {
+      alert(res.status === "success" ? "Profil mis à jour !" : "Échec de la mise à jour.");
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus, errorThrown);
     },
   });
 }
+
 function annulerEdition() {
   desactiverChampsCoordonnees();
 }
 
-$.ajax({
-  url: "check_user.php",
-  type: "POST",
-  success: function (response) {
-    var responseObject = JSON.parse(response);
-    if (responseObject.logged_in) {
-      // L'utilisateur est connecté, son ID est responseObject.user_id
-    } else {
-      // L'utilisateur n'est pas connecté
-    }
-  },
-});
-
 function majPassword() {
-  console.log("Attempting to update password...");
-  // Récupérer l'ancien mot de passe depuis le champ du formulaire
-  var oldPassword = document.getElementById("current_password").value;
-  var newPassword = document.getElementById("new_password").value;
-  var confirmPassword = document.getElementById("confirm_password").value;
+  const oldPassword = document.getElementById("current_password").value;
+  const newPassword = document.getElementById("new_password").value;
+  const confirmPassword = document.getElementById("confirm_password").value;
 
-  // Vérifier si les nouveaux mots de passe sont identiques
   if (newPassword !== confirmPassword) {
     alert("Les nouveaux mots de passe ne correspondent pas !");
     return;
   }
 
-  // Créer un objet avec les données à envoyer
-  var requestData = {
-    oldPassword: oldPassword,
-    newPassword: newPassword,
-  };
-  console.log("Request Data:", requestData);
-
-  // Effectuer la requête Ajax pour mettre à jour le mot de passe
   $.ajax({
     url: "update_password.php",
     type: "POST",
-    data: requestData,
+    data: { oldPassword, newPassword },
     dataType: "json",
-    success: function (data) {
-      console.log(data); // Affiche la réponse brute
-      if (data.status === "success") {
-        // Mot de passe correct, effectuer les actions nécessaires
-        alert("Mot de passe mis à jour avec succès !");
-      } else {
-        // Mot de passe incorrect, afficher un message d'erreur
-        alert("Échec de la mise à jour du mot de passe : " + data.message);
-      }
+    success: function (res) {
+      alert(res.status === "success"
+          ? "Mot de passe mis à jour avec succès !"
+          : "Erreur : " + res.message);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      // Gérer les erreurs de la requête
-      console.log(jqXHR.responseText); // Afficher le message d'erreur dans la console
-      console.error(
-        "Erreur de requête Ajax : " + textStatus + ", " + errorThrown
-      );
+      console.log(jqXHR.responseText);
+      console.error("Erreur : " + textStatus + ", " + errorThrown);
     },
   });
 }
 
-// Récupérer la hauteur du footer
-var footerHeight = document.querySelector('.footer').offsetHeight;
+function initFooterLogoHeight() {
+  const footerHeight = document.querySelector(".footer").offsetHeight;
+  document.getElementById("LogosFooter").style.maxHeight = footerHeight + "px";
+}
 
-// Appliquer la hauteur du footer comme max-height au LogosFooter
-var logosFooter = document.getElementById('LogosFooter');
-logosFooter.style.maxHeight = footerHeight + 'px';
+// Envoi de la nouvelle photo de profil
+function envoyerPhotoProfil() {
+  const input = document.getElementById("profile-picture-input");
+  const fichier = input.files[0];
+  if (!fichier) return;
 
-// Récupérer la hauteur du footer
-var footerHeight = document.querySelector('.footer').offsetHeight;
+  const formData = new FormData();
+  formData.append("profile_picture", fichier);
 
+  fetch("upload_profile_picture.php", {
+    method: "POST",
+    body: formData,
+  })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          alert("Photo mise à jour !");
+          location.reload();
+        } else {
+          alert("Erreur : " + data.message);
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur lors de l'envoi :", err);
+      });
+}
 
+// Initialisation
+document.addEventListener("DOMContentLoaded", function () {
+  initFooterLogoHeight();
+
+  // Action sur le bouton d'envoi de photo
+  const btnPhoto = document.getElementById("profile-picture-submit");
+  if (btnPhoto) {
+    btnPhoto.addEventListener("click", envoyerPhotoProfil);
+  }
+
+  // Gestion d’onglets profil
+  showSection("coordonnees");
+});

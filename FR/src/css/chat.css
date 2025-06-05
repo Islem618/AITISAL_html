@@ -446,3 +446,83 @@ h1 {
     margin: 0 auto;
   }
 }
+
+/* ─── AVATAR DANS LE CHAT ───────────────────────────────────────────────────────── */
+.message-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.message-header img.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+}
+
+.message-header strong {
+  margin-right: 12px;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.message-header .timestamp {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.message-content {
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-left: 40px; /* décale le texte pour ne pas chevaucher l’avatar */
+  margin-bottom: 10px;
+}
+/* ───────────────────────────────────────────────────────────────────────────── */
+/* ─── AVATAR DANS LE CHAT (PUBLIC + PRIVÉ) ───────────────────────────────────────── */
+
+.message-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.message-header img.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+}
+
+.message-header strong {
+  margin-right: 12px;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+.message-header .timestamp {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.message-content {
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-left: 40px; /* repousse le texte pour ne pas chevaucher l’avatar */
+  margin-bottom: 10px;
+}
+
+/* Style générique pour chaque “bulle” de post public */
+.post {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+}
+/* ───────────────────────────────────────────────────────────────────────────────── */
