@@ -352,7 +352,7 @@ will-change: opacity, max-height;
   }
   body {
     /* Arrière-plan spécifique pour les appareils mobiles */
-    background-image: url('../../images/Nutritium_Background1.png');
+    background-image: url('../../images/bgaitisal.png');
     background-size: cover;
     background-repeat: repeat; /* Active la répétition de l'arrière-plan */
     background-attachment: scroll;
