@@ -11,8 +11,8 @@ function changerImage(etat) {
     const img = document.getElementById("imgdeco");
     if (!img) return;
     img.src = etat === "survol"
-        ? "../../images/déconnexion2-hover.png"
-        : "../../images/déconnexion2.png";
+        ? "../../images/hover-signoutaitisal.png"
+        : "../../images/signoutaitisal.png";
 }
 
 // ─── Ajuster la hauteur des logos au footer ───────────────────────

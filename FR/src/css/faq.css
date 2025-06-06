@@ -7,7 +7,7 @@
 }
 
 body {
-  background-image: url("../../images/Nutritium_Background1.png");
+  background-image: url("../../images/bgaitisal.png");
   background-size: cover;
   background-repeat: repeat; /* Empêche la répétition de l'image */
   background-attachment: fixed; /* Fixe l'image pour qu'elle reste en place lorsque l'utilisateur fait défiler la page */

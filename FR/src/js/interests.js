@@ -17,9 +17,9 @@ function deconnexion() {
 function changerImage(etat) {
     var img = document.getElementById("imgdeco");
     if (etat === "survol") {
-        img.src = "../../images/déconnexion2-hover.png"; // Chemin vers l'image au survol
+        img.src = "../../images/hover-signoutaitisal.png"; // Chemin vers l'image au survol
     } else {
-        img.src = "../../images/déconnexion2.png"; // Chemin vers l'image normale
+        img.src = "../../images/signoutaitisal.png"; // Chemin vers l'image normale
     }
 }
 

@@ -67,8 +67,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         var img = document.getElementById("imgdeco");
         if (!img) return;
         img.src = (etat === "survol")
-            ? "../../images/déconnexion2-hover.png"
-            : "../../images/déconnexion2.png";
+            ? "../../images/hover-signoutaitisal.png"
+            : "../../images/signoutaitisal.png";
     }
 
     /* ─── Script principal pour charger / afficher / enregistrer les intérêts ─ */
@@ -159,7 +159,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 </script>
 
 <img src="../../images/footeraitisal.png" id="LogosFooter" alt="LogosFooter" title="LogosFooter">
-<img src="../../images/déconnexion2.png" id="imgdeco" alt="logo déconnexion" title="logo déconnexion"
+<img src="../../images/signoutaitisal.png" id="imgdeco" alt="logo déconnexion" title="logo déconnexion"
      onmouseover="changerImage('survol')" onmouseout="changerImage('normal')" onclick="deconnexion()">
 
 <footer>

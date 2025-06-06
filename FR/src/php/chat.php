@@ -76,7 +76,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 <!-- Pied de page & logos -->
 <img src="../../images/footeraitisal.png" id="LogosFooter" alt="Footer Logos" />
-<img src="../../images/déconnexion2.png" id="imgdeco"
+<img src="../../images/signoutaitisal.png" id="imgdeco"
      alt="Déconnexion" title="Déconnexion"
      onmouseover="changerImage('survol')"
      onmouseout="changerImage('normal')"
